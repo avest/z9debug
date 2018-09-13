@@ -1,0 +1,10 @@
+{
+    "name": "avest/z9debug",
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/avest/z9debug"
+        }
+    ],
+}
