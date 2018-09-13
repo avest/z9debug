@@ -22,5 +22,11 @@
 
     "require": {
         "nikic/php-parser": "4.0.3"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Z9debug\\": "classes/"
+        }
     }
 }
