@@ -1,5 +1,13 @@
 {
     "name": "avest/z9debug",
+    "description": "Debug class and console for debugging PHP code.",
+    "keywords": ["php", "debug"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Allan Vest"
+        }
+    ],
 
     "repositories": [
         {
