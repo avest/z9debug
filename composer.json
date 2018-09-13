@@ -18,5 +18,9 @@
             "type": "vcs",
             "url": "https://github.com/avest/z9debug"
         }
-    ]
+    ],
+
+    "require": {
+        "nikic/php-parser": "4.0.3"
+    }
 }
