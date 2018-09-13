@@ -10,7 +10,7 @@
         }
     ],
 
-    "minimum-stability": "1.0.0",
+    "minimum-stability": "stable",
     "prefer-stable": true,
 
     "repositories": [
