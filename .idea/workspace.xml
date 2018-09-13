@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a189fca-c7d0-4ec4-a051-8c2ab8641920" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="" />
@@ -168,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1536864465556</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="master: remove .idea folder">
+      <created>1536864793664</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1536864793664</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -201,7 +207,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="master: update composer.json" />
-    <option name="LAST_COMMIT_MESSAGE" value="master: update composer.json" />
+    <MESSAGE value="master: remove .idea folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="master: remove .idea folder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
