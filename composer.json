@@ -5,7 +5,8 @@
     "type": "library",
     "authors": [
         {
-            "name": "Allan Vest"
+            "name": "Allan Vest",
+            "email": "al@z9digital.com"
         }
     ],
 
