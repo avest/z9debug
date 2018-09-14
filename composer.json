@@ -1,32 +1,5 @@
 {
-    "name": "avest/z9debug",
-    "description": "Debug class and console for debugging PHP code.",
-    "keywords": ["php", "debug"],
-    "type": "library",
-    "authors": [
-        {
-            "name": "Allan Vest",
-            "email": "al@z9digital.com"
-        }
-    ],
-
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/avest/z9debug"
-        }
-    ],
-
     "require": {
-        "nikic/php-parser": "4.0.3"
-    },
-
-    "autoload": {
-        "psr-4": {
-            "Z9debug\\": "classes/"
-        }
+        "nikic/php-parser": "^3.1"
     }
 }

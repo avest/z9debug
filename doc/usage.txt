@@ -1,0 +1,96 @@
+//------------------------------------------------------------------------------------
+// USAGE:
+//------------------------------------------------------------------------------------
+
+ENABLED
+debug::enabled(false); // Disable debug entirely
+// Typically used to disable debug on production site if needed.
+
+ON
+debug::on(); // Turn debug on
+debug::on(false); // Don't turn debug on
+debug::on(true); // Turn debug on
+// "On" is limited to a single file, function or class method.
+// Use debug::on(); when you want the code to always generate debug.
+// Use debug::on(true); and debug::on(false); to toggle debug on and off.
+// Search for debug::on(true) and replace with debug::on(false) prior to committing code.
+// Note: debug must be enabled in order for debug::on() to work.
+
+OFF
+debug::off(); // Turn debug off
+debug::off(true); // Turn debug off
+debug::off(false); // Don't turn debug off
+// "Off" is limited to a single file, function or class method.
+
+IS_ON and IS_OFF
+if (debug::is_on()) { ... }
+if (debug::is_off()) { ... }
+
+VARIABLE
+debug::variable($my_var);
+debug::variable($array[$index], 'array['.$index.']'); // second parameter is variable name
+debug::variable($my_var, null, array('limit'=>1)); // add loop count limit
+debug::variable($my_var, null, array('start'=>10, 'limit'=>1)); // add loop start and count limit
+
+STRING
+debug::string('string');
+// debug::timestamp('string'); // add [yyyy-mm-dd hh:mm:ss] timestamp in front of string
+// debug::micro_timestamp('string'); // add [yyyy-mm-dd hh:mm:ss.ssssssss] timestamp in front of string
+
+EXIT
+debug::str_exit('string'); // 'string' is optional
+// exit() is only executed if debug is on.
+// Use this instead of exit(); so that you never have to figure out where the code halted.
+
+STACK_TRACE
+debug::stack_trace();
+
+MEMORY
+debug::memory();
+
+TIMER DEBUG
+$timer_id = debug::timer_start('timer_name');
+// put code here...
+$time = debug::timer_end($timer_id);
+
+SQL
+$sql_timer_id = debug::sql_start($sql, debug_backtrace());
+// put sql query here...
+$time = debug::sql_end($sql_timer_id);
+
+DISABLE SQL RECORDING
+debug::set('disable_sql_recording', true);
+// For performance and memory reasons, use this to prevent all sql recording.
+// This is typically set for data processing jobs.
+
+SESSION NAME
+debug::session_name('put name here');
+// Use this to give a session a name which you can then find in the console.
+
+SUPPRESS OUTPUT
+debug::suppress_output(true); // don't show the console link, default is true if not set
+// This is required for ajax requests and generating excel files.
+
+DEFAULT LIMIT
+debug::set('default_limit', 50); // override default loop count "limit" of 10
+
+GET
+debug::get('suppress_output');
+debug::get('enabled');
+debug::get('disable_sql_recording');
+debug::get('session_name');
+debug::get('default_limit');
+
+LEGACY
+debug::print_var($var, 'var_name');
+// Use this to echo variable to output instead of console.
+
+// API DEBUG (not used)
+// $output_data = debug::get_output_data();
+// debug::add_output_data($output_data);
+// This can be used to return raw debug data from a remote API call and
+// then load the raw data into the current debug session.
+
+CONSTANT (no longer used, use debug::variable() instead)
+debug::constant(constant, 'constant_name');
+debug::constant(function(), 'function_value_name');

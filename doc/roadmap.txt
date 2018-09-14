@@ -1,0 +1,37 @@
+Goals:
+
+Keep debug focused on debug only.
+
+Keep debug 100% stand alone.
+
+Keep debug as small, simple, and fast as possible.
+
+Possible Future Features:
+
+Increase security.
+Limit login to certain ip addresses.
+Block failed login ips.
+Enable emailing of failed logins.
+Log all/failed logins.
+Require strong password to login.
+Require HTTPS. Auto redirect to HTTPS page. If not a HTTPS page, do not process the login.
+Require valid SSL cert.
+Insure that the session folder files and config files are not accessible in the browser.
+
+Note: related to security...
+Don't make your dev sites publicly known.
+Only enable debug on dev for added security.
+Install in a folder that isn't named "debug" or "z9debug".
+
+On the file list, show a count for the number of times each function was called. (based on the debug::on() statement getting called)
+
+Show function/method calls in var output automatically. Treat the calls like a debug::variable() statement. Only so many loop calls allowed.
+We could then see the var, str, and func calls in one feed. (would need to add a new debug line type for output.)
+
+Ability to load empty debug class in production for max speed and security. (use debug_noop.php)
+
+Create video example of using debug.
+
+Create a load process for popular frameworks.
+
+Have debug add all debug::variable() statements automatically. (and remove statements automatically)

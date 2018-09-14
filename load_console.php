@@ -13,8 +13,8 @@
 // licensing information.
 //===================================================================
 
-define('Z9DEBUG_DIR', dirname( __FILE__ ));
-include_once(Z9DEBUG_DIR . '/classes/debug.php');
+//define('Z9DEBUG_DIR', dirname( __FILE__ ));
+include_once(Z9DEBUG_DIR . '/classes/debug_console.php');
 
 debug::construct();
 
