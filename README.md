@@ -11,23 +11,32 @@ Z9 Debug
 
 Z9 Debug is a stand alone PHP debugging class with it's own separate browser console page for viewing results.
 
-```php
-<?php
-$a = 1 + 1;
-debug::variable($a);
-?>
-```
-
 Debugging can be turned on for one or more PHP files, functions, or class methods.
 
 Turn debugging on (in the code or by using the console interface). Execute your web page. Click on 
 the optional console page link in the top right of your rendered web page. See the debug results.
 
-![Console page shortcut link](https://github.com/avest/z9debug/raw/master/doc/shortcut_link.png)  
-Console page shortcut link
+Sample code debugging the first_char() function found in /test.php:  
+```php
+<?php
+function first_char($input_string)
+{
+	debug::on(true);
+	debug::string('first_char()');
+	debug::variable($input_string);
+	
+	$return = substr($input_string, 0, 1);
+	debug::variable($return);
+	
+	return $return;
+?>
+```
 
-![Console page example](https://github.com/avest/z9debug/raw/master/doc/console.png)  
-Example console page
+Console page shortcut link:  
+![Console page shortcut link](https://github.com/avest/z9debug/raw/master/doc/shortcut_link.png)
+
+Example console page:
+![Console page example](https://github.com/avest/z9debug/raw/master/doc/console.png)
 
 Z9 Debug is NOT an "interactiv debugger". It captures all the debug data at the time of code execution 
 and allows you to efficiently view the data you wanted to see immediately afterwards.
