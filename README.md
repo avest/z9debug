@@ -41,7 +41,7 @@ function first_char($input_string)
 ?>
 ```
 
-Console page shortcut link:  
+Console page shortcut link (https://<domain name>/<debug folder>/console/):  
 ![Console page shortcut link](https://github.com/avest/z9debug/raw/master/doc/shortcut_link.png)
 
 Example console page:
@@ -378,6 +378,7 @@ debug::session_name('put name here');
 ```php
 debug::suppress_output(true); // don't show the console link, default is true if not set
 // This is required for ajax requests and generating excel files.
+// The console link is https://<domain name>/<debug folder>/console/
 ```
   
 **DEFAULT_LIMIT**
