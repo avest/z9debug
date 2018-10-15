@@ -20,6 +20,12 @@ define('Z9DEBUG_DIR', dirname(dirname( __FILE__ )));
 include(Z9DEBUG_DIR.'/load_console.php');
 debug::on(false);
 
+if (!is_file(Z9DEBUG_DIR.'/settings/config_settings.php'))
+{
+	echo "settings/config_settings.php file missing.<br>";
+	exit();
+}
+
 include(Z9DEBUG_DIR.'/settings/config_settings.php');
 include(Z9DEBUG_DIR.'/console/functions/console.php');
 
