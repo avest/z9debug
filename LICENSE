@@ -9,28 +9,23 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
+    1 Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
+    2 Redistributions in binary form must reproduce the above
       copyright notice, this list of conditions and the following
       disclaimer in the documentation and/or other materials provided
       with the distribution.
 
-    * The names of the contributors may not be used to endorse or
-      promote products derived from this software without specific
-      prior written permission.
+    3 Neither the name of the copyright holder nor the names of its
+      contributors nor the name of this software may be used to
+      endorse or promote products derived from this software without
+      specific prior written permission.
 
-    * Products derived from this software may not be called "Z9 Debug",
+    4 Products derived from this software may not be called "Z9 Debug",
       nor may "Z9 Debug" appear in the name, including any variation
       of spacing or capitalization of "Z9 Debug", without prior written
-      permission. For written permission, please contact
-      al@z9digital.com.
-
-    * The name "Z9 Debug" may not be used to endorse or promote
-      products derived from this software without prior written
-      permission. For written permission, please contact
-      al@z9digital.com.
+      permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
