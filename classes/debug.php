@@ -71,6 +71,9 @@ class debug
 	// )
 	public static $output_buffer = array();
 
+	// count total lines in output_buffer
+	public static $output_buffer_lines = 0;
+
 	// track length of strings that are going to get added to the output_buffer
 	public static $output_buffer_total_len = 0;
 
@@ -105,7 +108,7 @@ class debug
 	// $data['request_id'] - request_id is per request
 	// $data['enabled']
 	// $data['default_limit']
-	// $data['default_array_limit']
+	// $data['max_single_level_array_keys']
 	// $data['output_buffer_total_len_limit']
 	// $data['output_buffer_per_line_len']
 	public static $data = array();
@@ -198,8 +201,17 @@ class debug
 		// average number of characters of output for each line of debug as overhead not count the value...
 		self::$data['output_buffer_per_line_len'] = 50;
 
-		// max number of array elements to debug
-		self::$data['default_array_limit'] = 500;
+		// max number of array elements to debug for any given single level of an array
+		self::$data['max_single_level_array_keys'] = 500;
+
+		// for arrays, each element of an array may average about 2k of memory usage when processed.
+		// so if we want to keep memory to approx 16MB, then allow a max of 8000 array elements at any one time before "paging".
+		// in reality, the page will render between 8000 and 8499 because of the implementation and the use of the max_single_level_array_keys value.
+		self::$data['max_lines_per_page'] = 8000;
+
+		// only show 8000 lines of any array, this way an array will never span more than two pages
+		// in reality, the page will render between 8000 and 8499 because of the implementation and the use of the max_single_level_array_keys value.
+		self::$data['max_lines_per_variable'] = 8000;
 
 		// init toggle settings
 		self::$data['force_enabled'] = false;
@@ -856,6 +868,7 @@ CONTENT;
 
 			if (self::is_on(array('internal_call' => true)))
 			{
+				//echo "variable_start=".memory_get_usage()."<br>";
 				if (memory_get_usage() <= 134217728)
 				{
 					if (empty($variable_name))
@@ -880,6 +893,7 @@ CONTENT;
 				{
 					//echo "MEMORY"; exit();
 				}
+				//echo "variable_end=".memory_get_usage()."<br>";
 			}
 		}
 	}
@@ -1457,7 +1471,7 @@ CONTENT;
 		}
 	}
 
-	public static function default_limit($default_limit=50)
+	public static function default_limit($default_limit=10)
 	{
 		if (!empty($default_limit))
 		{
@@ -1696,11 +1710,20 @@ CONTENT;
 
 			// reset output_buffer_total_len
 			self::$output_buffer_total_len = 0;
+
+			// reset output_buffer_lines
+			self::$output_buffer_lines = 0;
 		}
 		else
 		{
 			self::$output_buffer[] = self::$output;
 			//if ($debug) { echo "output_buffer=<pre>"; print_r(self::$output_buffer); echo "</pre><br>"; }
+
+			// each call to debug::variable(), debug::string(), etc will add a new set of lines...
+			if (isset(self::$output['lines']))
+			{
+				self::$output_buffer_lines += count(self::$output['lines']);
+			}
 		}
 	}
 
@@ -1784,6 +1807,7 @@ CONTENT;
 	//------------------------------------------------------------
 	public static function debug_var(&$variable, $variable_name="debug", $show_color = true, $log_to_file = false, $log_to_screen = true, $log_file = null, $backtrace = null, $params = array())
 	{
+		//echo "debug_var_start=".memory_get_usage()."<br>";
 		//echo "variable=<pre>"; print_r($variable); echo "</pre><br>";
 		//echo "variable_name=<pre>"; print_r($variable_name); echo "</pre><br>";
 		//echo "show_color=<pre>"; print_r($show_color); echo "</pre><br>";
@@ -1858,7 +1882,7 @@ CONTENT;
 			}
 			else
 			{
-				self::$output['lines'] = self::debug_string($variable, $variable_name, $variable_name, $index = 0);
+				self::$output['lines'] = self::debug_string($variable, $variable_name, $variable_name, $index = 0, $params);
 			}
 
 			if ($is_limit_set)
@@ -1873,6 +1897,7 @@ CONTENT;
 		self::set_last_calling_properties();
 
 		$new_var_count_total = self::increment_var_count_total();
+		//echo "debug_var_end=".memory_get_usage()."<br>";
 	}
 
 	public static function debug_str($string, $show_color = true, $log_to_file = false, $log_to_screen = true, $log_file = null, $backtrace = null, $params = array())
@@ -1970,44 +1995,91 @@ CONTENT;
 		self::set_last_calling_properties();
 	}
 
-	private static function debug_array(&$array, $array_name, $org_array_name='', $index = 0)
+	private static function debug_array(&$array, $array_name, $org_array_name='', $index = 0, $params = array())
 	{
 		//$debug = false;
 		//if ($debug) { echo "debug_array()<br>"; }
 
 		$array_row_count = 0;
+		$pre_page_line_count = 0;
 		$return_array = array();
+		$line_cutoff_displayed = false;
 		if (is_array($array))
 		{
 			foreach($array as $var => $val)
 			{
-				if ($array_row_count < self::$data['default_array_limit'])
+				$all_lines = false;
+				if (isset($params['all_lines']) && $params['all_lines'])
 				{
-					$return2 = self::debug_string($val, $array_name . '[' . $var . ']', $org_array_name, $index+1);
-					if (is_array($return2))
+					$all_lines = true;
+				}
+
+				if ($all_lines || $pre_page_line_count + count($return_array) <= self::$data['max_lines_per_variable'])
+				{
+					if ($array_row_count < self::$data['max_single_level_array_keys'])
 					{
-						$return_array = array_merge($return_array, $return2);
+						$return2 = self::debug_string($val, $array_name . '[' . $var . ']', $org_array_name, $index+1, $params);
+
+						if (is_array($return2))
+						{
+							$return_array = array_merge($return_array, $return2);
+						}
+
+						// right here, we need to decide if we are going to page...
+						$page_output_lines = self::$output_buffer_lines + count($return_array);
+						//echo "page_output_lines = ".$page_output_lines."<br>";
+
+						if ($page_output_lines > self::$data['max_lines_per_page'] && !empty($return_array))
+						{
+							//echo "max array lines memory=".memory_get_usage()."<br>";
+
+							$pre_page_line_count += count($return_array);
+							//echo "pre_page_line_count = ".$pre_page_line_count."<br>";
+							self::$output['lines'] = &$return_array;
+							// force a page when calling add_output_to_buffer()...
+							self::$output_buffer_total_len = self::$data['output_buffer_total_len_limit'] + 1;
+							self::add_output_to_buffer();
+							// clear the return_array value...
+							$return_array = array();
+						}
+
 					}
+					else
+					{
+						// show array keys cutoff note
+						// get the last key
+						end($array);
+						$key = key($array);
+						reset($array);
+
+						$string = self::$data['max_single_level_array_keys'].' of '.count($array).' rows displayed';
+
+						$return3 = self::debug_array_cutoff($string, $array_name.'[...]', $org_array_name, $index+1);
+						if (is_array($return3))
+						{
+							$return_array = array_merge($return_array, $return3);
+						}
+
+						break;
+					}
+					$array_row_count++;
 				}
 				else
 				{
-					// show array cutoff note
-					// get the last key
-					end($array);
-					$key = key($array);
-					reset($array);
-
-					$string = self::$data['default_array_limit'].' of '.count($array).' rows displayed';
-
-					$return3 = self::debug_array_cutoff($string, $array_name.'[...]', $org_array_name, $index+1);
-					if (is_array($return3))
+					if (!$line_cutoff_displayed)
 					{
-						$return_array = array_merge($return_array, $return3);
-					}
+						// show array lines cutoff note
+						$string = self::$data['max_lines_per_variable'].' line limit reached';
 
-					break;
+						$return3 = self::debug_array_cutoff($string, $array_name.'[...]', $org_array_name, $index+1);
+						if (is_array($return3))
+						{
+							$return_array = array_merge($return_array, $return3);
+						}
+
+						$line_cutoff_displayed = true;
+					}
 				}
-				$array_row_count++;
 			}
 		}
 		return $return_array;
@@ -2047,7 +2119,7 @@ CONTENT;
 		return $return;
 	}
 
-	private static function debug_object(&$object, $object_name, $org_object_name='', $index = 0)
+	private static function debug_object(&$object, $object_name, $org_object_name='', $index = 0, $params = array())
 	{
 		//$debug = false;
 		//if ($debug) { echo "debug_object()<br>"; }
@@ -2059,7 +2131,7 @@ CONTENT;
 		foreach($arr as $prop => $val)
 		{
 			//echo "prop=<pre>";print_r($prop);echo"</pre><br>";
-			$return2 = self::debug_string($val, $object_name . ' -> ' . $prop, $org_object_name, $index+1);
+			$return2 = self::debug_string($val, $object_name . ' -> ' . $prop, $org_object_name, $index+1, $params);
 			$return_array = array_merge($return_array, $return2);
 		}
 
@@ -2077,7 +2149,7 @@ CONTENT;
 
 			if (!empty($object_value))
 			{
-				$return2 = self::debug_string($object_value, $object_name, $org_object_name, $index+1);
+				$return2 = self::debug_string($object_value, $object_name, $org_object_name, $index+1, $params);
 				//if ($debug) { echo "return2="; print_r($return2); echo "<br>"; }
 				$return_array = array_merge($return_array, $return2);
 				//if ($debug) { echo "return_array="; print_r($return_array); echo "<br>"; }
@@ -2116,8 +2188,9 @@ CONTENT;
 		return $return_array;
 	}
 
-	private static function debug_string(&$variable, $variable_name, $org_variable_name='', $index = 0)
+	private static function debug_string(&$variable, $variable_name, $org_variable_name='', $index = 0, $params = array())
 	{
+		//echo "debug_string_start=".memory_get_usage()."<br>";
 		//$debug = false;
 		//if ($debug) { echo "debug_string()<br>"; }
 		//if ($debug) { echo "variable_name=".$variable_name."<br>"; }
@@ -2275,7 +2348,7 @@ CONTENT;
 				}
 				else
 				{
-					return self::debug_array($variable, $variable_name, $org_variable_name, $index);
+					return self::debug_array($variable, $variable_name, $org_variable_name, $index, $params);
 				}
 			}
 			elseif (is_real($variable) || is_float($variable) || is_double($variable))
@@ -2403,6 +2476,7 @@ CONTENT;
 				return $return;
 			}
 		}
+		//echo "debug_string_end=".memory_get_usage()."<br>";
 	}
 
 //-----------------------------------------------
