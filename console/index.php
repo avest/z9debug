@@ -46,7 +46,7 @@ debug::variable($web_root);
 // add check for HTTPS
 if (!debug::get('force_http'))
 {
-	$is_https = ($_SERVER['SERVER_PROTOCOL'] == 443) ? true : false;
+	$is_https = ($_SERVER['SERVER_PORT'] == 443) ? true : false;
 	if (!$is_https)
 	{
 		echo "HTTPS required.<br>";
