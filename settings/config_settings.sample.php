@@ -2,11 +2,11 @@
 //===================================================================
 // z9Debug
 //===================================================================
-// _config.sample.php
+// config_settings.sample.php
 // --------------------
 // Sample config settings
 //
-//       Date Created: 2005-04-23
+//       Date Created: 2018-03-05
 //    Original Author: Allan Vest <al@z9digital.com>
 //
 // See the LICENSE file included with this program for additional
