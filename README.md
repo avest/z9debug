@@ -5,6 +5,7 @@ Z9 Debug
 [Installing](https://github.com/avest/z9debug#installing) |
 [Getting Started](https://github.com/avest/z9debug#getting-started) |
 [Config Settings](https://github.com/avest/z9debug#config-settings) |
+[Security](https://github.com/avest/z9debug#security) |
 [History](https://github.com/avest/z9debug#history) |
 [TODO](https://github.com/avest/z9debug#todo) |
 [License](https://github.com/avest/z9debug#license) |
@@ -20,6 +21,12 @@ the optional console page link in the top right of your rendered web page. See t
 Sample code debugging the first_char() function found in /test.php:  
 ```php
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'].'/debug/load.php');
+
+$my_string = 'abcdefg';
+
+$my_char = first_char($my_string);
+
 function first_char($input_string)
 {
 	debug::on(true);
@@ -401,6 +408,25 @@ The solution was addressed by the "on/off" interface created within the console.
 feature was made possible by using the PHP-Parse library. (more info below) 
 
 This software was first made publicly open source on GitHub in 2018.
+
+## Security
+
+Set the "password" or "remote_authentication" setting in the config_settings.php file. 
+
+Assign a unique value to the "secret" setting in the config_settings.php file.
+
+Use HTTPS / SSL Certificate on the site that has debug.
+
+If using a remote authentication API call, use HTTPS / SSL certificate on the API site.
+
+For free SSL Certificates, check out [LetsEncrypt](https://letsencrypt.org).
+
+Use strong passwords.
+
+Consider obfuscating the folder name that has the debug software to make it hard to guess/detect.
+
+Be sure to prevent files located in the "sessions" folder from being viewable in a browser.
+
 
 ## TODO
 
