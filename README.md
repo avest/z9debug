@@ -119,6 +119,7 @@ $ rm master.tar.gz
 ```
 
 Make the sessions folder writeable:
+```
 $ cd debug
 $ chmod 775 sessions
 ```
