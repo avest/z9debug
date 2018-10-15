@@ -24,8 +24,10 @@ Turn debugging on (in the code or by using the console interface). Execute your 
 the optional console page link in the top right of your rendered web page. See the debug results.
 
 ![Console page shortcut link](https://github.com/avest/z9debug/raw/master/doc/shortcut_link.png)
+Console page shortcut link
 
 ![Console page example](https://github.com/avest/z9debug/raw/master/doc/console.png)
+Example console page
 
 Z9 Debug is NOT an "interactiv debugger". It captures all the debug data at the time of code execution 
 and allows you to efficiently view the data you wanted to see immediately afterwards.
