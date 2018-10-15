@@ -320,6 +320,7 @@ debug::variable($my_var);
 debug::variable($array[$index], 'array['.$index.']'); // second parameter is variable name
 debug::variable($my_var, null, array('limit'=>1)); // add loop count limit
 debug::variable($my_var, null, array('start'=>10, 'limit'=>1)); // add loop start and count limit
+debug::variable($my_var, null, array('all_lines'=>true)); // show all lines for a variable, override the 8000 line limit
 ```
   
 **STRING**
