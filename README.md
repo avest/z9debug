@@ -3,9 +3,9 @@ Z9 Debug
 
 [Requirements](https://github.com/avest/z9debug#requirements) |
 [Installing](https://github.com/avest/z9debug#installing) |
-[Getting Started](https://github.com/avest/z9debug#getting-started) |
 [Config Settings](https://github.com/avest/z9debug#config-settings) |
 [Security](https://github.com/avest/z9debug#security) |
+[Getting Started](https://github.com/avest/z9debug#getting-started) |
 [History](https://github.com/avest/z9debug#history) |
 [TODO](https://github.com/avest/z9debug#todo) |
 [License](https://github.com/avest/z9debug#license) |
@@ -105,16 +105,22 @@ is limited. To minimize peak memory, debug data is periodically saved to a file 
 Download source code:  
 [Download Zip File](https://github.com/avest/z9debug/archive/master.zip)  
 [Download Tar File](https://github.com/avest/z9debug/archive/master.tar.gz)
-
-Create a folder in your site for the code. To make debug more secure, you might consider obfuscating 
-the folder name with something less obvious.
 ```
 $ cd <path to your site>
 $ wget https://github.com/avest/z9debug/archive/master.tar.gz
 $ tar xvfz master.tar.gz 
+```
+
+To make debug more secure, you might consider obfuscating 
+the folder name with something less obvious than "debug".
+```
 $ mv z9debug-master debug
 $ rm master.tar.gz
+```
+
+Make the sessions folder writeable:
 $ cd debug
+$ chmod 775 sessions
 ```
 
 Setup [Composer](http://getcomposer.org) (if needed)  
@@ -130,125 +136,6 @@ $ composer update
 Or (ignore the composer.json file)
 ```
 $ composer require nikic/php-parser:3.1
-```
-
-## Getting started
-
-**ENABLED** 
-```php
-debug::enabled(false); // Disable debug entirely
-// Typically used to disable debug on production site if needed.
-```
-  
-**ON**
-```php
-debug::on(); // Turn debug on
-debug::on(false); // Don't turn debug on
-debug::on(true); // Turn debug on
-// "On" is limited to a single file, function or class method.
-// Use debug::on(); when you want the code to always generate debug.
-// Use debug::on(true); and debug::on(false); to toggle debug on and off.
-// Search for debug::on(true) and replace with debug::on(false) prior to committing code.
-// Note: debug must be enabled in order for debug::on() to work.
-```  
-  
-**OFF**
-```php
-debug::off(); // Turn debug off
-debug::off(true); // Turn debug off
-debug::off(false); // Don't turn debug off
-// "Off" is limited to a single file, function or class method.
-```
-  
-**IS_ON** and **IS_OFF**
-```php
-if (debug::is_on()) { ... }
-if (debug::is_off()) { ... }
-```
-  
-**VARIABLE**
-```php
-debug::variable($my_var);
-debug::variable($array[$index], 'array['.$index.']'); // second parameter is variable name
-debug::variable($my_var, null, array('limit'=>1)); // add loop count limit
-debug::variable($my_var, null, array('start'=>10, 'limit'=>1)); // add loop start and count limit
-```
-  
-**STRING**
-```php
-debug::string('string');
-// debug::timestamp('string'); // add [yyyy-mm-dd hh:mm:ss] timestamp in front of string
-// debug::micro_timestamp('string'); // add [yyyy-mm-dd hh:mm:ss.ssssssss] timestamp in front of string
-```
-  
-**STR_EXIT**
-```php
-debug::str_exit('string'); // 'string' is optional
-// exit() is only executed if debug is on.
-// Use this instead of exit(); so that you never have to figure out where the code halted.
-```
-  
-**STACK_TRACE**
-```php
-debug::stack_trace();
-```
-  
-**MEMORY**
-```php
-debug::memory();
-```
-  
-**TIMING**
-```php
-$timer_id = debug::timer_start('timer_name');
-// put code here...
-$time = debug::timer_end($timer_id);
-```
-  
-**SQL RECORDING**
-```php
-$sql_timer_id = debug::sql_start($sql, debug_backtrace());
-// put sql query here...
-$time = debug::sql_end($sql_timer_id);
-```
-  
-**DISABLE SQL RECORDING**
-```php
-debug::set('disable_sql_recording', true);
-// For performance and memory reasons, use this to prevent all sql recording.
-// This is typically set for data processing jobs.
-```
-  
-**SESSION_NAME**
-```php
-debug::session_name('put name here');
-// Use this to give a session a name which you can then find in the console.
-```
-  
-**SUPPRESS_OUTPUT**
-```php
-debug::suppress_output(true); // don't show the console link, default is true if not set
-// This is required for ajax requests and generating excel files.
-```
-  
-**DEFAULT_LIMIT**
-```php
-debug::set('default_limit', 50); // override default loop count "limit" of 10
-```
-  
-**GET**
-```php
-debug::get('suppress_output');
-debug::get('enabled');
-debug::get('disable_sql_recording');
-debug::get('session_name');
-debug::get('default_limit');
-```
-  
-**LEGACY**
-```php
-debug::print_var($var, 'var_name');
-// Use this to echo variable to output instead of console.
 ```
 
 ## Config Settings
@@ -388,6 +275,128 @@ Use strong passwords.
 Consider obfuscating the folder name that has the debug software to make it hard to guess/detect.
 
 Be sure to prevent files located in the "sessions" folder from being viewable in a browser.
+
+
+
+
+## Getting started
+
+**ENABLED** 
+```php
+debug::enabled(false); // Disable debug entirely
+// Typically used to disable debug on production site if needed.
+```
+  
+**ON**
+```php
+debug::on(); // Turn debug on
+debug::on(false); // Don't turn debug on
+debug::on(true); // Turn debug on
+// "On" is limited to a single file, function or class method.
+// Use debug::on(); when you want the code to always generate debug.
+// Use debug::on(true); and debug::on(false); to toggle debug on and off.
+// Search for debug::on(true) and replace with debug::on(false) prior to committing code.
+// Note: debug must be enabled in order for debug::on() to work.
+```  
+  
+**OFF**
+```php
+debug::off(); // Turn debug off
+debug::off(true); // Turn debug off
+debug::off(false); // Don't turn debug off
+// "Off" is limited to a single file, function or class method.
+```
+  
+**IS_ON** and **IS_OFF**
+```php
+if (debug::is_on()) { ... }
+if (debug::is_off()) { ... }
+```
+  
+**VARIABLE**
+```php
+debug::variable($my_var);
+debug::variable($array[$index], 'array['.$index.']'); // second parameter is variable name
+debug::variable($my_var, null, array('limit'=>1)); // add loop count limit
+debug::variable($my_var, null, array('start'=>10, 'limit'=>1)); // add loop start and count limit
+```
+  
+**STRING**
+```php
+debug::string('string');
+// debug::timestamp('string'); // add [yyyy-mm-dd hh:mm:ss] timestamp in front of string
+// debug::micro_timestamp('string'); // add [yyyy-mm-dd hh:mm:ss.ssssssss] timestamp in front of string
+```
+  
+**STR_EXIT**
+```php
+debug::str_exit('string'); // 'string' is optional
+// exit() is only executed if debug is on.
+// Use this instead of exit(); so that you never have to figure out where the code halted.
+```
+  
+**STACK_TRACE**
+```php
+debug::stack_trace();
+```
+  
+**MEMORY**
+```php
+debug::memory();
+```
+  
+**TIMING**
+```php
+$timer_id = debug::timer_start('timer_name');
+// put code here...
+$time = debug::timer_end($timer_id);
+```
+  
+**SQL RECORDING**
+```php
+$sql_timer_id = debug::sql_start($sql, debug_backtrace());
+// put sql query here...
+$time = debug::sql_end($sql_timer_id);
+```
+  
+**DISABLE SQL RECORDING**
+```php
+debug::set('disable_sql_recording', true);
+// For performance and memory reasons, use this to prevent all sql recording.
+// This is typically set for data processing jobs.
+```
+  
+**SESSION_NAME**
+```php
+debug::session_name('put name here');
+// Use this to give a session a name which you can then find in the console.
+```
+  
+**SUPPRESS_OUTPUT**
+```php
+debug::suppress_output(true); // don't show the console link, default is true if not set
+// This is required for ajax requests and generating excel files.
+```
+  
+**DEFAULT_LIMIT**
+```php
+debug::set('default_limit', 50); // override default loop count "limit" of 10
+```
+  
+**GET**
+```php
+debug::get('suppress_output');
+debug::get('enabled');
+debug::get('disable_sql_recording');
+debug::get('session_name');
+debug::get('default_limit');
+```
+  
+**LEGACY**
+```php
+debug::print_var($var, 'var_name');
+// Use this to echo variable to output instead of console.
+```
 
 ## History
 
