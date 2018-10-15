@@ -23,6 +23,9 @@ Debugging can be turned on for one or more PHP files, functions, or class method
 Turn debugging on (in the code or by using the console interface). Execute your web page. Click on 
 the optional console page link in the top right of your rendered web page. See the debug results.
 
+![Console page shortcut link](http://github.com/avest/z9debug/doc/shortcut_link.png)
+
+
 Z9 Debug is NOT an "interactiv debugger". It captures all the debug data at the time of code execution 
 and allows you to efficiently view the data you wanted to see immediately afterwards.
 
