@@ -371,6 +371,24 @@ debug::set('file_categories', array(
 ?>
 ```
 
+## Security
+
+Set the "password" or "remote_authentication" setting in the config_settings.php file. 
+
+Assign a unique value to the "secret" setting in the config_settings.php file.
+
+Use HTTPS / SSL Certificate on the site that has debug.
+
+If using a remote authentication API call, use HTTPS / SSL certificate on the API site.
+
+For free SSL Certificates, check out [LetsEncrypt](https://letsencrypt.org).
+
+Use strong passwords.
+
+Consider obfuscating the folder name that has the debug software to make it hard to guess/detect.
+
+Be sure to prevent files located in the "sessions" folder from being viewable in a browser.
+
 ## History
 
 Started in 2005, the class started out as a better way to display print_r() results and 
@@ -408,24 +426,6 @@ The solution was addressed by the "on/off" interface created within the console.
 feature was made possible by using the PHP-Parse library. (more info below) 
 
 This software was first made publicly open source on GitHub in 2018.
-
-## Security
-
-Set the "password" or "remote_authentication" setting in the config_settings.php file. 
-
-Assign a unique value to the "secret" setting in the config_settings.php file.
-
-Use HTTPS / SSL Certificate on the site that has debug.
-
-If using a remote authentication API call, use HTTPS / SSL certificate on the API site.
-
-For free SSL Certificates, check out [LetsEncrypt](https://letsencrypt.org).
-
-Use strong passwords.
-
-Consider obfuscating the folder name that has the debug software to make it hard to guess/detect.
-
-Be sure to prevent files located in the "sessions" folder from being viewable in a browser.
 
 
 ## TODO
