@@ -37,6 +37,28 @@ debug::variable($web_root);
 $web_root = str_replace("\\", "/", $web_root);
 debug::variable($web_root);
 
+// add check for HTTPS
+if (!debug::get('force_http'))
+{
+	$is_https = ($_SERVER['SERVER_PROTOCOL'] == 443) ? true : false;
+	if (!$is_https)
+	{
+		echo "HTTPS required.<br>";
+		exit();
+	}
+}
+
+// add check for writeable sessions folder
+$sessions_dir = Z9DEBUG_DIR.DIRECTORY_SEPARATOR.'sessions';
+debug::variable($sessions_dir);
+
+if (!is_writeable($sessions_dir))
+{
+	echo "sessions directory is not writeable.<br>";
+	exit();
+}
+
+
 if (isset($_POST['password_is_submitted']))
 {
 	$remote_authentication = debug::get('remote_authentication');
