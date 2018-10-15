@@ -3,7 +3,8 @@ Z9 Debug
 
 [Requirements](https://github.com/avest/z9debug#requirements) |
 [Installing](https://github.com/avest/z9debug#installing) |
-[Getting started](https://github.com/avest/z9debug#getting-started) |
+[Getting Started](https://github.com/avest/z9debug#getting-started) |
+[Config Settings](https://github.com/avest/z9debug#config-settings) |
 [History](https://github.com/avest/z9debug#history) |
 [TODO](https://github.com/avest/z9debug#todo) |
 [License](https://github.com/avest/z9debug#license) |
@@ -29,6 +30,7 @@ function first_char($input_string)
 	debug::variable($return);
 	
 	return $return;
+}
 ?>
 ```
 
@@ -240,6 +242,123 @@ debug::get('default_limit');
 ```php
 debug::print_var($var, 'var_name');
 // Use this to echo variable to output instead of console.
+```
+
+## Config Settings
+
+Copy config_settings.sample.php to config_settings.php:  
+```
+$ cd settings
+$ cp config_settings.sample.php config_settings.php
+```
+
+Edit config_settings.php:  
+```php
+<?php
+
+// Remote authentication is ideal for when you want to use debug on
+// multiple sites for the same set of developers.
+// Specify the URL of a remote authentication API.
+// For security reasons, make sure you use HTTPS.
+// eg: https://<your domain>/<your_authentication_page>
+// Z9 Debug will pass the username and password values from the login screen as POST variables to
+// the URL specified.
+// $_POST['developer_user']
+// $_POST['developer_password']
+// If the API request then returns a "1" value, the user will be authenticated.
+debug::set('remote_authentication', '');
+
+// If remote authentication is not used, then a single password can be used for authentication.
+debug::set('password', '');
+
+// A secret is used to encrypt the authentication token value saved to a cookie.
+// Enter a random 8+ character value.
+debug::set('secret', '');
+
+// Optional, if you want to populate user and page data to the "CMS" page in the console,
+// set is_cms_installed to true and then call debug::set_cms_user() and/or
+// debug::set_cms_paeg() to populate the data.
+debug::set('is_cms_installed', false);
+
+// It is recommended that force_http always be set to false.
+// But if you truly need to acces the debug console and don't have HTTPS enabled, you
+// can set force_http to true to bypass the HTTPS security check.
+// Better yet, see https://letsencrypt.org to install a free SSL certificate on all of your development sites.
+debug::set('force_http', false);
+
+?>
+```
+
+Optional, setup file_categories.php:  
+```
+$ cd settings
+$ cp file_categories.sample.php file_categories.php
+```
+
+Optional, edit file_categories.php:  
+```php
+<?php
+
+// This file is optional.
+
+// The settings in this file, modify the display of the "File" page in the console.
+
+// You would setup this file based on your framework.
+
+// Level 1 of the array is the file type. It can be any value. eg: 'Controller', 'Block', 'View', 'Action', 'Gateway', 'Facade', 'Bootstrap', 'Debug', etc...
+
+// Put the level 1 file types in the order that you want to view them...
+
+// For each file type, you can then specify what files to 'include' and what files to 'exclude' using a regular expression.
+
+// If you create a file_categories file that works for a particular framework, please pass it along and we will add it.
+
+debug::set('file_categories', array(
+	'Controller' => array(
+		'include' => array(
+			'(.*)classes\/Controller(.*)',
+		),
+		'exclude' => array(
+		),
+	),
+	'Block' => array(
+		'include' => array(
+			'(.*)_block.php',
+		),
+		'exclude' => array(
+		),
+	),
+	'View' => array(
+		'include' => array(
+			'(.*).tpl.php',
+		),
+		'exclude' => array(
+		),
+	),
+	'Gateway' => array(
+		'include' => array(
+			'(.*)Gateway.php',
+		),
+		'exclude' => array(
+		),
+	),
+	'Facade' => array(
+		'include' => array(
+			'(.*)classes\/Facade(.*)',
+		),
+		'exclude' => array(
+		),
+	),
+	'Debug' => array(
+		'include' => array(
+			'(.*)debug(.*)',
+		),
+		'exclude' => array(
+		),
+	),
+));
+
+?>
 ```
 
 ## History
