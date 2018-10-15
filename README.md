@@ -378,7 +378,7 @@ debug::session_name('put name here');
 ```php
 debug::suppress_output(true); // don't show the console link, default is true if not set
 // This is required for ajax requests and generating excel files.
-// The console link is https://&lt;domain name&gt;/&lt;debug folder&gt;/console/
+// The console link is https://<domain name>/<debug folder>/console/
 ```
   
 **DEFAULT_LIMIT**
