@@ -23,6 +23,22 @@ debug::on(false);
 include(Z9DEBUG_DIR.'/settings/config_settings.php');
 include(Z9DEBUG_DIR.'/console/functions/console.php');
 
+$web_root = remove_leading(str_replace("\\", "/", Z9DEBUG_DIR), str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']));
+
+$web_root = str_replace("\\", "/", $web_root);
+debug::variable($web_root);
+
+
+$is_authenticated = is_valid_auth_token();
+debug::variable($is_authenticated);
+
+if (!$is_authenticated)
+{
+	exit();
+}
+
+
+
 if (is_file(Z9DEBUG_DIR.'/settings/toggle_settings.php'))
 {
 	include(Z9DEBUG_DIR.'/settings/toggle_settings.php');
