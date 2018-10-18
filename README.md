@@ -403,26 +403,26 @@ debug::print_var($var, 'var_name');
 
 ## History
 
-Started in 2005, the class started out as a better way to display print_r() results and 
-has slowly evolved one small tweak at a time to make it better as needed.
+Z9 Debug was developed over 14 years, starting in 2005, and then open sourced in 2018.
 
-First rule is that the debug software will always be stand alone so that it can be easily
-added to any web site and it will only require one line of code to add it into a site.
+The debug class started out as a better way to display print_r() results and has slowly 
+evolved as needed within real world team use one small tweak at a time.
 
-The software has evolved since the start, but it has only been enhanced as a direct 
-need to further improve productivity during the course of actual real world software projects. 
+The original inspiration was to separate the display of debug results from the actual
+rendered HTML of a web site.
+ 
+The solution was to capture debug results during execution and create a separate console window
+for the display of the results.
 
-The first problem was to eliminate the display of output in the middle of rendered HTML. 
-The solution for formatted display was to record the data during execution and then properly 
-display the data in a separate console window.
+The original concept, which is still true, was to design a "stand alone" debug tool that 
+could easily be added to any web site project with one line of code.
 
-To organize the data, the concept of sessions and requests was introduced and tracked with cookies.
+To organize the data, the concept of sessions and requests was introduced and tracked with cookies. Login 
+authentication was added to secure the console.
 
-Login authentication was added to secure the console page.
-
-Turns out there are a handful of challenges to avoid using large 
-amounts of memory during code execution, slowing the page request down, or causing the browser to 
-hang when displaying large amounts of data... The goal for additional memory is 16MB.
+Performance has always been a primary issue during development. Specifically, memory usage, keep the page 
+request fast, and not allowing the console page to hang the browser with too much content.  The current 
+target for additional memory usage is 16MB.
 
 PHP does not support passing a variable and then knowing what the name of the variable is... so for many 
 years, all calls where made like this to pass the variable name: 
@@ -430,14 +430,13 @@ years, all calls where made like this to pass the variable name:
 # use to have to pass the variable name...
 debug::variable($my_var, 'my_var'); 
 ```
-The solution to this was to save a copy of the code file that has the debug statement and to
-then parse that line of code at the time of rendering the console page.
+Retying the name of a variable always bothered me. The solution was to save a copy of the PHP code 
+file that has the debug statement and to then parse that line of code at the time of rendering the 
+console page. The debug::variable() statement is much cleaner now.
 
-Another milestone was the ability to debug a site without having to make a code change.
-The solution was addressed by the "on/off" interface created within the console. This
+Another hurdle was how to debug a site without having to push code updates to turn debug on.
+The solution was addressed by the "on/off" interface created within the console. Credit: this
 feature was made possible by using the PHP-Parse library. (more info below) 
-
-This software was first made publicly open source on GitHub in 2018.
 
 
 ## TODO
