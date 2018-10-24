@@ -346,11 +346,11 @@ class debug
 		$session_name = self::get('session_name');
 		if (!empty($session_name))
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/var_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/var_data.php';
 		}
 		else
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/var_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/var_data.php';
 		}
 		//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
@@ -367,7 +367,9 @@ class debug
 		else
 		{
 			//if ($debug) { echo "write file<br>"; }
-			self::write_file(serialize(self::$output_buffer).chr(10), $file_path);
+			$file_content = "<?php exit(); ?>\n".serialize(self::$output_buffer).chr(10);
+
+			self::write_file($file_content, $file_path);
 			self::$output_buffer_page_count++;
 		}
 	}
@@ -389,15 +391,17 @@ class debug
 		$session_name = self::get('session_name');
 		if (!empty($session_name))
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/page_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/page_data.php';
 		}
 		else
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/page_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/page_data.php';
 		}
 		//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
-		self::write_file(serialize($page_data), $file_path);
+		$file_content = "<?php exit(); ?>\n".serialize($page_data);
+
+		self::write_file($file_content, $file_path);
 	}
 
 	// TODO - make timer data separate from var data
@@ -422,15 +426,17 @@ class debug
 		$session_name = self::get('session_name');
 		if (!empty($session_name))
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/sql_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/sql_data.php';
 		}
 		else
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/sql_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/sql_data.php';
 		}
 		//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
-		self::write_file(serialize(self::$sql_timers), $file_path);
+		$file_content = "<?php exit(); ?>\n".serialize(self::$sql_timers);
+
+		self::write_file($file_content, $file_path);
 	}
 
 	// parts of the following function are originally from PHP Quick Profiler
@@ -473,15 +479,17 @@ class debug
 		$session_name = self::get('session_name');
 		if (!empty($session_name))
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/file_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/file_data.php';
 		}
 		else
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/file_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/file_data.php';
 		}
 		//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
-		self::write_file(serialize($file_data), $file_path);
+		$file_content = "<?php exit(); ?>\n".serialize($file_data);
+
+		self::write_file($file_content, $file_path);
 
 	}
 
@@ -525,16 +533,18 @@ class debug
 		$session_name = self::get('session_name');
 		if (!empty($session_name))
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/request_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/global_data.php';
 		}
 		else
 		{
-			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/request_data.txt';
+			$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/global_data.php';
 		}
 
 		//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
-		self::write_file(serialize($lines), $file_path);
+		$file_content = "<?php exit(); ?>\n".serialize($lines);
+
+		self::write_file($file_content, $file_path);
 	}
 
 	public static function save_cms_data()
@@ -566,16 +576,18 @@ class debug
 			$session_name = self::get('session_name');
 			if (!empty($session_name))
 			{
-				$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/cms_data.txt';
+				$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'_'.$session_name.'/'.self::$data['request_id'].'/cms_data.php';
 			}
 			else
 			{
-				$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/cms_data.txt';
+				$file_path = Z9DEBUG_DIR.'/sessions/'.self::$data['session_id'].'/'.self::$data['request_id'].'/cms_data.php';
 			}
 
 			//if ($debug) { echo "file_path="; print_r($file_path); echo "<br>"; }
 
-			self::write_file(serialize($lines), $file_path);
+			$file_content = "<?php exit(); ?>\n".serialize($lines);
+
+			self::write_file($file_content, $file_path);
 		}
 	}
 

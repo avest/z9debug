@@ -13,6 +13,10 @@
 // licensing information.
 //===================================================================
 
+use Facade\Str;
+use Z9\Debug\Console\Facade\Value;
+use Facade\Action;
+
 $last_calling_file = '';
 $last_calling_line = '';
 $last_calling_function = '';
@@ -56,7 +60,7 @@ if (is_array($var_data))
 								//   0 => 'testing123...',
 								// )
 
-								$value_lines = display_value_lines($line['value']);
+								$value_lines = Value::display_value_lines($line['value']);
 								debug::variable($value_lines);
 
 								$content = '';
@@ -72,9 +76,9 @@ if (is_array($var_data))
 								break;
 
 							case 'variable':
-								if (empty($line['name']) || starts_with($line['name'], '###EMPTY###'))
+								if (empty($line['name']) || Str::starts_with($line['name'], '###EMPTY###'))
 								{
-									$line['name'] = get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
+									$line['name'] = Action::_('Z9\Debug\Console\CodeFile')->get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
 								}
 								//debug::string('variable...');
 								// 'display' => 'variable'
@@ -83,8 +87,8 @@ if (is_array($var_data))
 								// 'value' => array(
 								//   0 => 'Allan',
 								// )
-								$value_lines = display_value_lines($line['value']);
-								$value_wrap = display_value_wrap($line['type']);
+								$value_lines = Value::display_value_lines($line['value']);
+								$value_wrap = Value::display_value_wrap($line['type']);
 
 								$content = '';
 								$content .= '<table id=tm><tr><td id=l>';
@@ -110,7 +114,7 @@ if (is_array($var_data))
 							case 'method':
 								if (empty($line['name']) || starts_with($line['name'], '###EMPTY###'))
 								{
-									$line['name'] = get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
+									$line['name'] = Action::_('Z9\Debug\Console\CodeFile')->get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
 								}
 								//debug::string('method...');
 								// 'display' => 'method'
@@ -119,7 +123,7 @@ if (is_array($var_data))
 								// 'value' => array(
 								//   0 => 'method',
 								//),
-								$value_lines = display_value_lines($line['value']);
+								$value_lines = Value::display_value_lines($line['value']);
 
 								$content = '';
 								$content .= '<table id=tm><tr><td id=l>';

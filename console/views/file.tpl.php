@@ -13,6 +13,8 @@
 // licensing information.
 //===================================================================
 
+use Facade\File;
+
 debug::on(false);
 
 $div_id = 1;
@@ -60,7 +62,7 @@ $div_id = 1;
 <?php endif; ?>
 
 </td>
-<td valign="top" class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo get_readable_file_size($file['size']) ?></td>
+<td valign="top" class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo File::get_readable_file_size($file['size']) ?></td>
 </tr>
 
 
@@ -71,7 +73,7 @@ $div_id = 1;
 	<tr>
 		<td class="<?php echo (($alt) ? 'alt' : '') ?>">&nbsp;</td>
 		<td class="<?php echo (($alt) ? 'alt' : '') ?>">&nbsp;</td>
-		<td class="<?php echo (($alt) ? 'alt' : '') ?>"><b><?php echo get_readable_file_size($file_data['totals']['size']) ?></b></td>
+		<td class="<?php echo (($alt) ? 'alt' : '') ?>"><b><?php echo File::get_readable_file_size($file_data['totals']['size']) ?></b></td>
 	</tr>
 	</table>
 

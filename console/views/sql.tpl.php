@@ -89,7 +89,7 @@ if ($count > 0)
 Total Queries: <b><?php echo $count; ?></b> |
 Total Time: <b><?php echo $total_time; ?></b> |
 Avg Time: <b><?php echo $avg_time; ?></b> |
-<?php if (isset($_POST['slow_queries']) && $_POST['slow_queries'] == '1'): ?>
+<?php if ($slow_queries): ?>
 <a href="javascript:show_sql();">All Queries</a>
 <?php else: ?>
 <a href="javascript:show_slow_queries();">Slow Queries</a>

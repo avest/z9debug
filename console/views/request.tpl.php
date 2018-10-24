@@ -12,6 +12,9 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Date;
+
 ?>
 <table class=filestbl cellspacing=0 cellpadding=3 border=0>
 <?php //if (is_array($request_data) && !empty($request_id)): ?>
@@ -22,7 +25,7 @@
 <tr>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>" id="indicator"><?php echo ($request['request_id'] == $request_id) ? '&#9654;' : '' ?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $count+1 ?></td>
-<td class="<?php echo (($alt) ? 'alt' : '') ?>"><a href="?z9dsid=<?php echo $session_id?>&z9drid=<?php echo $request['request_id']?>"><?php echo convert_unix_date($request['request_date'], 'mm/dd/yyyy hh:mm:ss') ?></a></td>
+<td class="<?php echo (($alt) ? 'alt' : '') ?>"><a href="?z9dsid=<?php echo $session_id?>&z9drid=<?php echo $request['request_id']?>"><?php echo Date::convert_unix_date($request['request_date'], 'mm/dd/yyyy hh:mm:ss') ?></a></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $request['request_url_path'] ?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><a class="link" href="javascript:delete_request('<?php echo $request['request_id'];?>');">Delete</a></td>
 </tr>

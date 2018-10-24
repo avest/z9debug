@@ -12,6 +12,9 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Str;
+
 ?>
 <?php debug::on(false); ?>
 
@@ -34,14 +37,14 @@
 		<?php if (is_array($on_file_functions)): ?>
 			<?php foreach ($on_file_functions as $on_file_function): ?>
 
-				<?php if (in_str($on_file_function, '::')): ?>
+				<?php if (Str::in_str($on_file_function, '::')): ?>
 					<?php list($curr_class, $curr_function) = explode('::', $on_file_function); ?>
 				<?php else: ?>
 					<?php $curr_class = ''; ?>
 					<?php $curr_function = $on_file_function; ?>
 				<?php endif; ?>
 
-				<?php if (in_str($curr_class, '/')): ?>
+				<?php if (Str::in_str($curr_class, '/')): ?>
 					<?php $curr_namespace = dirname($curr_class); ?>
 					<?php if ($curr_namespace == '/'): ?>
 						<?php $curr_namespace = ''; ?>
@@ -55,7 +58,7 @@
 
 				<tr>
 					<td style="padding-right:10px;">
-						<a href="#" onclick="ta('<?php echo str_replace('\\', '\\\\', $_SERVER['DOCUMENT_ROOT'].$curr_file_path); ?>')"><?php echo remove_leading($curr_file_path, $_SERVER['DOCUMENT_ROOT']); ?></a>
+						<a href="#" onclick="ta('<?php echo str_replace('\\', '\\\\', $_SERVER['DOCUMENT_ROOT'].$curr_file_path); ?>')"><?php echo Str::remove_leading($curr_file_path, $_SERVER['DOCUMENT_ROOT']); ?></a>
 
 						<?php if (!empty($curr_namespace) || !empty($curr_class)): ?>
 							 :

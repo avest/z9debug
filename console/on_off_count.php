@@ -13,53 +13,8 @@
 // licensing information.
 //===================================================================
 
-define('Z9DEBUG_CONSOLE', true);
+$framework_dir = dirname(dirname( __FILE__ )).DIRECTORY_SEPARATOR.'framework';
+include_once($framework_dir.DIRECTORY_SEPARATOR.'front.php');
+exit();
 
-define('Z9DEBUG_DIR', dirname(dirname( __FILE__ )));
-
-include(Z9DEBUG_DIR.'/load_console.php');
-debug::on(false);
-
-include(Z9DEBUG_DIR.'/settings/config_settings.php');
-include(Z9DEBUG_DIR.'/console/functions/console.php');
-
-$web_root = remove_leading(str_replace("\\", "/", Z9DEBUG_DIR), str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']));
-
-$web_root = str_replace("\\", "/", $web_root);
-debug::variable($web_root);
-
-
-$is_authenticated = is_valid_auth_token();
-debug::variable($is_authenticated);
-
-if (!$is_authenticated)
-{
-	exit();
-}
-
-
-
-if (is_file(Z9DEBUG_DIR.'/settings/toggle_settings.php'))
-{
-	include(Z9DEBUG_DIR.'/settings/toggle_settings.php');
-}
-$on_off_count = 0;
-
-$force_on = debug::get('force_on');
-debug::variable($force_on);
-
-if (is_array($force_on))
-{
-	foreach ($force_on as $file_name => $file_name_settings)
-	{
-		if (is_array($file_name_settings))
-		{
-			foreach ($file_name_settings as $file_index => $file_setting)
-			{
-				$on_off_count++;
-			}
-		}
-	}
-}
-
-include(Z9DEBUG_DIR.'/console/views/on_off_count.tpl.php');
+?>

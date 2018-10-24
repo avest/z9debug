@@ -46,4 +46,14 @@ debug::set('is_cms_installed', false);
 // Better yet, see https://letsencrypt.org to install a free SSL certificate on all of your development sites.
 debug::set('force_http', false);
 
+// strong password requirements
+debug::set('strong_password', array(
+	'min_chars' => 8,
+	'req_upper_and_lower' => true,
+	'req_char' => true,
+	'req_digit' => false,
+	'req_symbol' => false,
+	'req_digit_or_symbol' => true,
+));
+
 ?>

@@ -351,6 +351,19 @@ A.ftrlnk:HOVER, A.ftrlnk:VISITED:HOVER {
 	border:0;
 }
 
+/* with top border */
+#tborder {
+	-webkit-border-horizontal-spacing:initial;
+	-webkit-border-vertical-spacing:initial;
+	border-spacing:0;
+	border-collapse:separate;
+	padding:0;
+	border:0;
+	border-top:1px solid #dcdcdc;
+	padding-top:3px;
+	margin-top:3px;
+}
+
 #content_page_load_time {
 	display:inline;
 	padding-left:20px;
@@ -511,6 +524,12 @@ h1 {
 
 .button {
 	cursor:pointer;
+	padding-left: 15px;
+	padding-right:15px;
+	padding-top:5px;
+	padding-bottom:5px;
+	border: 1px solid #d0d0d0;
+	border-radius: 2px;
 }
 
 #mo {

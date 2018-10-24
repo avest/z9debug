@@ -23,47 +23,6 @@
 
 <body>
 
-<?php if (false): ?>
-<header class="header">
-	<div id=hdr>
-		<table cellspacing=0 cellpadding=0 border=0 width=100%>
-			<tr>
-				<td align=left style="padding-top:3px;">
-					<table cellspacing=0 cellpadding=0 border=0 style="display:inline;">
-						<tr>
-							<td id=nav>
-							</td>
-							<td>
-								<div id=content_page_load_time></div>
-							</td>
-							<td>
-								<div id=content_page_peak_memory></div>
-							</td>
-							<td>
-								<div id=content_page_sql_time></div>
-							</td>
-						</tr>
-					</table>
-
-				</td>
-				<td align=right>
-					<div id=hide>
-						<div class="close_btn"><a class=link_nodecor style="color:#ffffff;"
-								href="javascript:window.close();">&#215;<!--&#9664;--></a></div>
-
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
-</header>
-<?php endif; ?>
-
-<?php if (false): ?>
-<div id="left_nav">
-	<b>Debug</b><br>
-</div>
-<?php endif; ?>
 
 <div id=login>
 	<form style="padding:0px; margin:0px;" method="post" action="<?php echo $action; ?>">
@@ -88,7 +47,7 @@
 					Username:
 				</td>
 				<td style="padding-top:20px; padding-right:20px;">
-					<input type="text" name="username" id="username" value="" />
+					<input style="padding:5px;" type="text" name="username" id="username" value="" />
 				</td>
 			</tr>
 			<?php endif; ?>
@@ -97,15 +56,23 @@
 					Password:
 				</td>
 				<td style="padding-top:20px; padding-right:20px;">
-					<input type="password" name="password" id="password" value="" />
+					<input style="padding:5px;" type="password" name="password" id="password" value="" />
 				</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td style="padding-bottom:20px;">
+				<td style="padding-bottom:20px;padding-top:15px;">
 					<input class="button" type="submit" name="login_button" id="login_button" value="Login" />
 				</td>
 			</tr>
+			<?php if (false): ?>
+			<tr>
+				<td colspan="2" style="padding-left:20px;"><center>
+					<b>Strong Password Required</b><br>&nbsp;
+					</center>
+				</td>
+			</tr>
+			<?php endif; ?>
 		</table>
 	</form>
 </div>
@@ -113,26 +80,6 @@
 <script>
 	document.getElementById("password").focus();
 </script>
-
-<?php if (false): ?>
-<footer class="footer">
-	<div id="ftrdiv">
-		<table cellspacing="0" cellpadding="0" border="0" width="100%">
-			<tr>
-				<td align="left" class="ftrstatus">
-
-				</td>
-				<td align="right">
-					z9Debug &nbsp;-&nbsp;
-					v2.0.0 &nbsp;-&nbsp;
-					Copyright &copy; 2015 &nbsp;-&nbsp;
-					<a class=ftrlnk href="http://www.z9digital.com">z9Digital.com</a>
-				</td>
-			</tr>
-		</table>
-		<div>
-</footer>
-<?php endif; ?>
 
 </body>
 </html>

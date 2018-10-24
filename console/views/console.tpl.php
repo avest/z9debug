@@ -12,6 +12,10 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Date;
+use Facade\File;
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -607,7 +611,7 @@
 			<td align=left style="padding-top:3px;">
 				<table cellspacing=0 cellpadding=0 border=0 style="display:inline;"><tr>
 				<td style="font-size:12px;">
-					<?php echo convert_unix_date($request_date, 'mm/dd/yyyy hh:mm:ss'); ?><?php echo (!empty($request_url_path)) ? ':' : ''; ?>
+					<?php echo Date::convert_unix_date($request_date, 'mm/dd/yyyy hh:mm:ss'); ?><?php echo (!empty($request_url_path)) ? ':' : ''; ?>
 					<?php echo $request_url_path; ?>
 				</td>
 				</tr></table>
@@ -744,12 +748,12 @@
 		<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
 		<td align="left" class="ftrstatus">
 <?php if (false): ?>
-		<?php echo convert_unix_date($request_date, 'mm/dd/yyyy hh:mm:ss'); ?>:
+		<?php echo Date::convert_unix_date($request_date, 'mm/dd/yyyy hh:mm:ss'); ?>:
 		<?php echo $request_url_path; ?>
 <?php endif; ?>
 
 			<div id=content_page_load_time>page load time: <b><?php echo $page_load_time; ?></b></div>
-			<div id=content_page_peak_memory>peak memory: <b><?php echo friendly_memory($page_peak_memory); ?></b></div>
+			<div id=content_page_peak_memory>peak memory: <b><?php echo File::friendly_file_size($page_peak_memory); ?></b></div>
 			<div id=content_page_sql_time>sql query time: <b><?php echo $page_sql_time; ?></b></div>
 
 

@@ -13,6 +13,11 @@
 // licensing information.
 //===================================================================
 
+	use Facade\Str;
+	use Z9\Debug\Console\Facade\Value;
+	use Facade\Action;
+
+	debug::on(false);
 
 	//[0] => Array
 	//   (
@@ -69,6 +74,7 @@
 				$calling_line <> $last_calling_line)
 			{
 				$curr_file_line_count = 0; // restart count
+				debug::variable($curr_file_line_count);
 			}
 
 			// do we need to display location
@@ -93,7 +99,7 @@
 
 				$js_calling_file = $calling_file;
 				$js_calling_file = str_replace('\\', '/', $js_calling_file);
-				$js_calling_file = remove_leading($js_calling_file, $document_root);
+				$js_calling_file = Str::remove_leading($js_calling_file, $document_root);
 				debug::variable($js_calling_file);
 
 				$js_calling_class = $calling_class;
@@ -152,6 +158,9 @@
 			debug::variable($return_string);
 
 			debug::variable($output['lines']);
+
+			$start_new_line = true;
+
 			// process lines
 			if (isset($output['lines']) && is_array($output['lines']))
 			{
@@ -173,11 +182,18 @@
 								//   0 => 'testing123...',
 								// )
 
-								$value_lines = display_value_lines($line['value']);
+								$value_lines = Value::display_value_lines($line['value']);
 								debug::variable($value_lines);
 
 								$content = '';
-								$content .= '<table id=t><tr><td id=l>';
+								if ($start_new_line)
+								{
+									$content .= '<table id=tborder><tr><td id=l>';
+								}
+								else
+								{
+									$content .= '<table id=t><tr><td id=l>';
+								}
 								$content .= $calling_line;
 								$content .= '</td><td id=s>';
 								$content .= $value_lines;
@@ -190,9 +206,9 @@
 
 							case 'variable':
 
-								if (empty($line['name']) || starts_with($line['name'], '###EMPTY###'))
+								if (empty($line['name']) || Str::starts_with($line['name'], '###EMPTY###'))
 								{
-									$line['name'] = get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
+									$line['name'] = Action::_('Z9\Debug\Console\CodeFile')->get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
 								}
 								//debug::string('variable...');
 								// 'display' => 'variable'
@@ -201,11 +217,18 @@
 								// 'value' => array(
 								//   0 => 'Allan',
 								// )
-								$value_lines = display_value_lines($line['value']);
-								$value_wrap = display_value_wrap($line['type']);
+								$value_lines = Value::display_value_lines($line['value']);
+								$value_wrap = Value::display_value_wrap($line['type']);
 
 								$content = '';
-								$content .= '<table id=t><tr><td id=l>';
+								if ($start_new_line)
+								{
+									$content .= '<table id=tborder><tr><td id=l>';
+								}
+								else
+								{
+									$content .= '<table id=t><tr><td id=l>';
+								}
 								$content .= $calling_line;
 								$content .= '</td><td id=v><div id=n>';
 								$content .= $line['name'];
@@ -233,15 +256,22 @@
 								// 'value' => array(
 								//   0 => 'method',
 								//),
-								if (empty($line['name']) || starts_with($line['name'], '###EMPTY###'))
+								if (empty($line['name']) || Str::starts_with($line['name'], '###EMPTY###'))
 								{
-									$line['name'] = get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
+									$line['name'] = Action::_('Z9\Debug\Console\CodeFile')->get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
 								}
 
-								$value_lines = display_value_lines($line['value']);
+								$value_lines = Value::display_value_lines($line['value']);
 
 								$content = '';
-								$content .= '<table id=t><tr><td id=l>';
+								if ($start_new_line)
+								{
+									$content .= '<table id=tborder><tr><td id=l>';
+								}
+								else
+								{
+									$content .= '<table id=t><tr><td id=l>';
+								}
 								$content .= $calling_line;
 								$content .= '</td><td id=v><div id=n>';
 								$content .= $line['name'];
@@ -259,7 +289,8 @@
 					{
 						debug::variable($line['display']);
 						debug::variable($line);
-						// $curr_file_line_count > $max_file_line_count
+
+						// DISPLAY MORE LINK
 						if ($curr_file_line_count == $max_file_line_count + 1)
 						{
 							switch ($line['display'])
@@ -304,6 +335,9 @@
 							} // end switch
 						}
 					} // end $curr_file_line_count <= 40
+
+					$start_new_line = false;
+
 				}  // end foreach
 
 				$last_calling_file = $calling_file;

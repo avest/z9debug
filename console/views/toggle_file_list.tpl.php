@@ -12,6 +12,9 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Str;
+
 ?>
 <?php if (!empty($dir_file_list)): ?>
 <?php if (is_array($dir_file_list)): ?>
@@ -21,10 +24,10 @@
 	<?php //$display_file = str_replace('-', ' ', $display_file); ?>
 		<?php if (true): ?>
 		<nobr><a href="#" onclick="ta('<?php echo str_replace("\\", "\\\\", $dir_path.$file); ?>');"><i class="far fa-file"></i>&nbsp;
-				<?php echo html($display_file); ?></a></nobr><br>
+				<?php echo Str::html($display_file); ?></a></nobr><br>
 		<?php endif; ?>
 		<?php if (false): ?>
-		<nobr><a href="#" onclick="ta('<?php echo str_replace("\\", "\\\\", $dir_path.$file); ?>');"><?php echo html(remove_trailing($display_file, '.php')); ?></a></nobr><br>
+		<nobr><a href="#" onclick="ta('<?php echo str_replace("\\", "\\\\", $dir_path.$file); ?>');"><?php echo Str::html(Str::remove_trailing($display_file, '.php')); ?></a></nobr><br>
 		<?php endif; ?>
 
 <?php endforeach; ?>

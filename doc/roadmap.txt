@@ -6,21 +6,26 @@ Keep debug 100% stand alone.
 
 Keep debug as small, simple, and fast as possible.
 
-Possible Future Features:
+TODO:
+Add support for mult classes in a single php file.
+Eliminate need for .htaccess and mod_rewrite... (done 2018-10-24)
+Change session data file extension from .txt to .php. (done 2018-10-24)
+Add php exit() at start of data files. (done 2018-10-24)
+Require strong password to login. (done 2018-10-24)
+Add visual divide between loop variables. (done 2018-10-24)
+Require remote_authentication url use HTTPS. (done 2018-10-24)
 
-Increase security.
-Limit login to certain ip addresses.
+Possible Enhancements:
 Block failed login ips.
 Enable emailing of failed logins.
 Log all/failed logins.
-Require strong password to login.
-Require HTTPS. Auto redirect to HTTPS page. If not a HTTPS page, do not process the login.
+Auto redirect to HTTPS page. If not a HTTPS page, do not process the login.
 Require valid SSL cert.
-Insure that the session folder files and config files are not accessible in the browser.
+Limit login to certain ip addresses.
 
 Note: related to security...
 Don't make your dev sites publicly known.
-Only enable debug on dev for added security.
+When possible, don't ename debug in production if not needed.
 Install in a folder that isn't named "debug" or "z9debug".
 
 On the file list, show a count for the number of times each function was called. (based on the debug::on() statement getting called)

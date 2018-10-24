@@ -12,6 +12,9 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Date;
+
 ?>
 <table class=filestbl cellspacing=0 cellpadding=3 border=0>
 <?php //if (is_array($session_data) && !empty($session_id)): ?>
@@ -22,7 +25,7 @@
 <tr>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>" id="indicator"><?php echo ($session['session_id'] == $session_id) ? '&#9654;' : '' ?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $count+1 ?></td>
-<td class="<?php echo (($alt) ? 'alt' : '') ?>"><a href="?z9dsid=<?php echo $session['session_id']?>"><?php echo convert_unix_date($session['session_date'], 'mm/dd/yyyy hh:mm:ss') ?></a></td>
+<td class="<?php echo (($alt) ? 'alt' : '') ?>"><a href="?z9dsid=<?php echo $session['session_id']?>"><?php echo Date::convert_unix_date($session['session_date'], 'mm/dd/yyyy hh:mm:ss') ?></a></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $session['request_count']?> &nbsp;request</td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $session['session_name']?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><a class="link" href="javascript:delete_session('<?php echo $session['session_id']; ?>');">Delete</a></td>

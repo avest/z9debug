@@ -12,6 +12,9 @@
 // See the LICENSE file included with this program for additional
 // licensing information.
 //===================================================================
+
+use Facade\Str;
+
 ?>
 <?php if ($physical_path <> $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR): ?>
 	<a href="#" onclick="ta('<?php echo str_replace("\\", "\\\\", dirname($physical_path.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR); ?>');"><i class="fas fa-caret-right"></i>
@@ -27,7 +30,7 @@
 	<?php //$display_dir = str_replace('-', ' ', $display_dir); ?>
 		<a href="#" onclick="ta('<?php echo str_replace("\\", "\\\\", $physical_path.$dir.DIRECTORY_SEPARATOR); ?>');"><i class="fas fa-caret-right"></i>
 		<i class="far fa-folder"></i>&nbsp;
-		<?php echo html($display_dir); ?></a><br>
+		<?php echo Str::html($display_dir); ?></a><br>
 <?php endforeach; ?>
 <?php endif; ?>
 <?php endif; ?>
