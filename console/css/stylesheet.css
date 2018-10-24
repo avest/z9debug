@@ -53,6 +53,7 @@ body {
 	/*overflow: hidden;*/
 	text-align: right;
 	width: 30px;
+	min-width: 30px;
 }
 
 #m {
