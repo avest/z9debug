@@ -112,7 +112,7 @@ if (is_array($var_data))
 								break;
 
 							case 'method':
-								if (empty($line['name']) || starts_with($line['name'], '###EMPTY###'))
+								if (empty($line['name']) || Str::starts_with($line['name'], '###EMPTY###'))
 								{
 									$line['name'] = Action::_('Z9\Debug\Console\CodeFile')->get_variable_name($session_id, $request_id, $calling_file, $calling_line, $line['name']);
 								}
