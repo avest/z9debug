@@ -14,7 +14,6 @@
 
 namespace Z9\Debug\Console\Action;
 
-use function Couchbase\defaultDecoder;
 use debug;
 use Facade\Dependency;
 use Facade\File;
