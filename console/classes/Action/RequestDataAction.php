@@ -68,7 +68,7 @@ class RequestDataAction
 				$page_data = Action::_('Z9\Debug\Console\PageData')->get_page_data($request_dir);
 				debug::variable($page_data);
 
-				$requests[$page_data['request_date']] = array(
+				$requests[] = array(
 					'request_id' => $request_id,
 					'request_full_url' => $page_data['request_full_url'],
 					'request_url_path' => $page_data['request_url_path'],
