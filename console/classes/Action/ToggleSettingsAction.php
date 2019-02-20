@@ -160,10 +160,6 @@ class ToggleSettingsAction
 			$confirm_file_path = realpath($file_path);
 			debug::variable($confirm_file_path);
 
-			if ($file_path <> $confirm_file_path)
-			{
-				exit();
-			}
 
 			$is_valid_file_path = false;
 			if (Str::starts_with($file_path, $_SERVER['DOCUMENT_ROOT']))
@@ -172,10 +168,6 @@ class ToggleSettingsAction
 			}
 			debug::variable($is_valid_file_path);
 
-			if (!$is_valid_file_path)
-			{
-				exit();
-			}
 
 
 			$force_on_path = Str::remove_leading($file_path, $_SERVER['DOCUMENT_ROOT']);
@@ -239,6 +231,17 @@ class ToggleSettingsAction
 			}
 			else
 			{
+
+				if ($file_path <> $confirm_file_path)
+				{
+					exit();
+				}
+
+				if (!$is_valid_file_path)
+				{
+					exit();
+				}
+
 				// toggle on
 				$force_on[Str::remove_leading($file_path, $_SERVER['DOCUMENT_ROOT'])][] = $on_file_function_value;
 			}
