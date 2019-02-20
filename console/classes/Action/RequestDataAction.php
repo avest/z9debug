@@ -60,6 +60,11 @@ class RequestDataAction
 
 		if (is_array($dir_list))
 		{
+			sort($dir_list);
+		}
+
+		if (is_array($dir_list))
+		{
 			foreach ($dir_list as $request_id)
 			{
 				$request_dir = $session_dir.DIRECTORY_SEPARATOR.$request_id;
