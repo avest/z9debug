@@ -270,14 +270,14 @@ class debug
 
 	public static function force_on($file, $function)
 	{
-		$debug = false;
+		//$debug = true;
 		if (self::$data['force_enabled'] || self::$data['enabled'])
 		{
 			$function = str_replace('\\', '/', $function);
 			$file = str_replace('\\', '/', $file);
 
 			self::$enabled[$file][$function] = true;
-			if ($debug) { echo "force enabled[".$file."][".$function."]=<pre>";print_r(self::$enabled[$file][$function]);echo "</pre><br>"; }
+			//if ($debug) { echo "force enabled[".$file."][".$function."]=<pre>";print_r(self::$enabled[$file][$function]);echo "</pre><br>"; }
 		}
 	}
 
@@ -1432,6 +1432,12 @@ CONTENT;
 
 	public static function set($var_name, $var_value)
 	{
+		if ($var_name == 'enabled')
+		{
+			self::enabled($var_value);
+			return true;
+		}
+
 		// do not allow spaces in session_name
 		if ($var_name == 'session_name')
 		{
@@ -1446,14 +1452,25 @@ CONTENT;
 
 	public static function enabled($boolean=true)
 	{
-		$ok_to_set = true;
+		//$debug = true;
+		$ok_to_disable = true;
 		if (self::$data['force_enabled'])
 		{
-			$ok_to_set = false;
+			$ok_to_disable = false;
+			//if ($debug) { echo "ok_to_disable=<pre>";print_r($ok_to_disable);echo "</pre><br>"; }
 		}
-		if ($ok_to_set)
+		if ($boolean == false)
+		{
+			if ($ok_to_disable)
+			{
+				debug::set('enabled', $boolean);
+				//if ($debug) { echo "enabled set to false<br>"; }
+			}
+		}
+		else
 		{
 			debug::set('enabled', $boolean);
+			//if ($debug) { echo "enabled set to true<br>"; }
 		}
 	}
 
