@@ -1463,13 +1463,15 @@ CONTENT;
 		{
 			if ($ok_to_disable)
 			{
-				debug::set('enabled', $boolean);
+				//debug::set('enabled', $boolean);
+				self::$data['enabled'] = $boolean;
 				//if ($debug) { echo "enabled set to false<br>"; }
 			}
 		}
 		else
 		{
-			debug::set('enabled', $boolean);
+			//debug::set('enabled', $boolean);
+			self::$data['enabled'] = $boolean;
 			//if ($debug) { echo "enabled set to true<br>"; }
 		}
 	}
