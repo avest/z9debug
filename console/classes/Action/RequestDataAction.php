@@ -46,6 +46,34 @@ class RequestDataAction
 		return $request_id;
 	}
 
+	public function get_request_data_for_request($session_id, $request_id)
+	{
+		debug::on(false);
+		debug::variable($session_id);
+		debug::variable($request_id);
+
+		$session_dir = Z9DEBUG_DIR.DIRECTORY_SEPARATOR.'sessions'.DIRECTORY_SEPARATOR.$session_id;
+		debug::variable($session_dir);
+
+		$request_dir = $session_dir.DIRECTORY_SEPARATOR.$request_id;
+		debug::variable($request_dir);
+
+		$page_data = Action::_('Z9\Debug\Console\PageData')->get_page_data($request_dir);
+		debug::variable($page_data);
+
+		$request_data = array(
+			'session_id' => $session_id,
+			'request_id' => $request_id,
+			'request_full_url' => $page_data['request_full_url'],
+			'request_url_path' => $page_data['request_url_path'],
+			'request_date' => $page_data['request_date'],
+		);
+		debug::variable($request_data);
+
+		return $request_data;
+	}
+
+
 	public function get_request_data($session_dir)
 	{
 		debug::on(false);
