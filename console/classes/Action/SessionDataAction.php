@@ -17,6 +17,7 @@ namespace Z9\Debug\Console\Action;
 
 use debug;
 use Facade\File;
+use Facade\Action;
 
 class SessionDataAction
 {
@@ -105,12 +106,20 @@ class SessionDataAction
 					$session_key += 1;
 				}
 
+				$latest_request_id = Action::_('Z9\Debug\Console\RequestData')->get_most_recent_request_id($session_dir);
+				debug::variable($latest_request_id);
+
+				$latest_request_data = Action::_('Z9\Debug\Console\RequestData')->get_request_data_for_request($session_id, $latest_request_id);
+				debug::variable($latest_request_data);
+
 				$sessions[$session_key] = array(
 					'session_id' => $session_id,
 					'session_dir' => $session_dir,
 					'session_date' => $last_mod_time,
 					'request_count' => $request_count,
 					'session_name' => $session_name,
+					'latest_request_id' => $latest_request_id,
+					'latest_request_data' => $latest_request_data,
 				);
 			}
 		}

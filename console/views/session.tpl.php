@@ -27,6 +27,7 @@ use Facade\Date;
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $count+1 ?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><a href="?z9dsid=<?php echo $session['session_id']?>"><?php echo Date::convert_unix_date($session['session_date'], 'mm/dd/yyyy hh:mm:ss') ?></a></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $session['request_count']?> &nbsp;request</td>
+<td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $session['latest_request_data']['request_url_path']?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><?php echo $session['session_name']?></td>
 <td class="<?php echo (($alt) ? 'alt' : '') ?>"><a class="link" href="javascript:delete_session('<?php echo $session['session_id']; ?>');">Delete</a></td>
 </tr>
