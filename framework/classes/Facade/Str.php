@@ -358,7 +358,8 @@ class Str
 		{
 			for ($i = 0; $i <= ($len - 1); $i++)
 			{
-				$output_string .= ( ereg("^[0-9\.]+$", $input_string[$i])) ? $input_string[$i] : '';
+				//$output_string .= ( ereg("^[0-9\.]+$", $input_string[$i])) ? $input_string[$i] : '';
+				$output_string .= ( preg_match("/^[0-9\.]+$/", $input_string[$i])) ? $input_string[$i] : '';
 			}
 		}
 		return $output_string;
