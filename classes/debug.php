@@ -1094,9 +1094,13 @@ CONTENT;
 
 				// record all sql queries regardless of self::$enabled and self::is_on().
 				self::$backtrace = $backtrace;
-				if (	self::$backtrace[1]['function'] == 'build_array_from_sql' ||
-					self::$backtrace[1]['function'] == 'get_single_value_from_sql' ||
-					self::$backtrace[1]['function'] == 'get_single_row_from_sql')
+				if (isset(self::$backtrace[1]['function']) &&
+					(
+						self::$backtrace[1]['function'] == 'build_array_from_sql' ||
+						self::$backtrace[1]['function'] == 'get_single_value_from_sql' ||
+						self::$backtrace[1]['function'] == 'get_single_row_from_sql'
+					)
+				)
 				{
 					self::pop_backtrace_level();
 				}
