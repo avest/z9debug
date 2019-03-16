@@ -164,7 +164,25 @@ class debug
 		}
 		else
 		{
-			self::$data['session_id'] = uniqid('', true);
+			//----------------------------------------------
+			// Set z9dsid session id cookie
+			//----------------------------------------------
+			$random_bytes = openssl_random_pseudo_bytes( 32, $visitor_crypto_strong);
+			$random_hex = bin2hex($random_bytes);
+
+			$ip_address = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
+
+			$user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+			$micro_time = microtime();
+
+			$unique_string = $random_hex.$ip_address.$user_agent.$micro_time;
+
+			self::$data['session_id'] = strtoupper(md5($unique_string));
+
+			// set expiration to 12 months
+			$expiration = time()+(60*60*24*365);
+
 
 			if (php_sapi_name() == 'cli')
 			{
@@ -172,14 +190,15 @@ class debug
 			}
 			else
 			{
+				$secure = true;
 				if (self::get('force_http'))
 				{
-					setcookie('z9dsid', self::$data['session_id'], null, '/', null, false);
+					$secure = false;
 				}
-				else
-				{
-					setcookie('z9dsid', self::$data['session_id'], null, '/', null, true);
-				}
+
+				header('z9dsid: '.self::$data['session_id']);
+				setcookie('z9dsid', self::$data['session_id'], $expiration, '/', null, $secure);
+				setcookie('z9dsid_exp', $expiration, $expiration, '/', null, $secure);
 
 				$_COOKIE['z9sid'] = self::$data['session_id'];
 			}
