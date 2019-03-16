@@ -134,15 +134,19 @@ class UserAction
 	public function logout()
 	{
 		// logout
-		$cms_cookie_name = 'z9debug_token';
-		$_COOKIE[$cms_cookie_name] = '';
+		$token_cookie_name = 'z9debug_token';
+		$login_cookie_name = 'z9debug_login';
+		$_COOKIE[$token_cookie_name] = '';
+		$_COOKIE[$login_cookie_name] = '';
 		if (debug::get('force_http'))
 		{
-			setcookie($cms_cookie_name, '', null,"/", null, false);
+			setcookie($token_cookie_name, '', null,"/", null, false);
+			setcookie($login_cookie_name, '', null,"/", null, false);
 		}
 		else
 		{
-			setcookie($cms_cookie_name, '', null,"/", null, true);
+			setcookie($token_cookie_name, '', null,"/", null, true);
+			setcookie($login_cookie_name, '', null,"/", null, true);
 		}
 		debug::string('clearing cookie');
 	}

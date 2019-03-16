@@ -28,7 +28,7 @@ class Authenticate
 	{
 		debug::on(false);
 		debug::string('is_valid_auth_token()');
-		$cms_cookie_name = 'z9debug_token';
+		$token_cookie_name = 'z9debug_token';
 		$cms_cookie_value = '';
 		$cms_user = '';
 		$cms_cookie_issued = '';
@@ -38,14 +38,14 @@ class Authenticate
 		$cms_auth_secret_key = debug::get('secret');
 		$cms_public_part = '';
 
-		if (isset($_COOKIE[$cms_cookie_name]))
+		if (isset($_COOKIE[$token_cookie_name]))
 		{
-			$cms_cookie_value = $_COOKIE[$cms_cookie_name];
+			$cms_cookie_value = $_COOKIE[$token_cookie_name];
 			list($cms_user, $cms_cookie_issued, $cms_cookie_expired, $cms_cookie_hash) = explode(":", $cms_cookie_value, 4);
 			$cms_public_part = $cms_user.":".$cms_cookie_issued.":".$cms_cookie_expired;
 			$cms_calc_hash = md5($cms_auth_secret_key.":".md5($cms_public_part.":".$cms_auth_secret_key));
 		}
-		debug::variable($cms_cookie_name);
+		debug::variable($token_cookie_name);
 		debug::variable($cms_cookie_value);
 		debug::variable($cms_auth_secret_key);
 		debug::variable($cms_user);
@@ -73,7 +73,8 @@ class Authenticate
 	function set_auth_token($username='')
 	{
 		debug::on(false);
-		$cms_cookie_name = 'z9debug_token';
+		$token_cookie_name = 'z9debug_token';
+		$login_cookie_name = 'z9debug_login';
 		$cms_user = $username;
 		$cms_auth_secret_key = debug::get('secret');
 
@@ -85,15 +86,18 @@ class Authenticate
 
 		if (debug::get('force_http'))
 		{
-			setcookie($cms_cookie_name, $cms_auth_token, time()+31536000,"/", null, false);
+			setcookie($token_cookie_name, $cms_auth_token, time()+31536000,"/", null, false);
+			setcookie($login_cookie_name, $cms_user, time()+31536000,"/", null, false);
 		}
 		else
 		{
-			setcookie($cms_cookie_name, $cms_auth_token, time()+31536000,"/", null, true);
+			setcookie($token_cookie_name, $cms_auth_token, time()+31536000,"/", null, true);
+			setcookie($login_cookie_name, $cms_user, time()+31536000,"/", null, true);
 		}
-		$_COOKIE[$cms_cookie_name] = $cms_auth_token;
+		$_COOKIE[$token_cookie_name] = $cms_auth_token;
+		$_COOKIE[$login_cookie_name] = $cms_user;
 
-		debug::variable($cms_cookie_name);
+		debug::variable($token_cookie_name);
 		debug::variable($cms_auth_secret_key);
 		debug::variable($cms_user);
 		debug::variable($cms_cookie_issued);
