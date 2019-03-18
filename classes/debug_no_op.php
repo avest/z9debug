@@ -186,6 +186,52 @@ class debug
 	{
 	}
 
+	public static function update_session_cookie()
+	{
+		$curr_z9dsid = (isset($_COOKIE['z9dsid'])) ? $_COOKIE['z9dsid'] : '';
+
+		$curr_z9dsid_exp = (isset($_COOKIE['z9dsid_exp'])) ? $_COOKIE['z9dsid_exp'] : '';
+
+		$new_z9dsid = '';
+		if (empty($curr_z9dsid))
+		{
+			$random_bytes = openssl_random_pseudo_bytes( 32, $visitor_crypto_strong);
+			$random_hex = bin2hex($random_bytes);
+
+			$ip_address = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
+
+			$user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+			$micro_time = microtime();
+
+			$unique_string = $random_hex.$ip_address.$user_agent.$micro_time;
+
+			$new_z9dsid = strtoupper(md5($unique_string));
+		}
+
+		// set expiration to 12 months
+		$expiration = time()+(60*60*24*365);
+
+		// only update expiration if more than 24 hours old
+		$min_expiration = $expiration - (60*60*24);
+
+		$set_cookie = false;
+		if (!empty($new_z9dsid) || $curr_z9dsid_exp < $min_expiration)
+		{
+			$set_cookie = true;
+		}
+
+		if ($set_cookie)
+		{
+			// send cookie to browser
+			header('z9dsid: '.$new_z9dsid);
+			setcookie('z9dsid', $new_z9dsid, $expiration, '/', null, true);
+			setcookie('z9dsid_exp', $expiration, $expiration, '/', null, true);
+		}
+
+		return $new_z9dsid;
+	}
+
 	public static function save_page_data()
 	{
 	}
