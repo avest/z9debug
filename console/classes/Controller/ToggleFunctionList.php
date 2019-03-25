@@ -141,6 +141,23 @@ class ToggleFunctionList
 			);
 			debug::variable($functions);
 		}
+		else
+		{
+			if (is_array($functions) && count($functions) > 0 && $is_physical_file)
+			{
+				$functions = array_merge(
+					array(array(
+						'file_path' => $physical_path,
+						'namespace' => '',
+						'class' => '',
+						'function' => '',
+						'line_number' => '',
+					)),
+					$functions
+				);
+				debug::variable($functions);
+			}
+		}
 
 
 		// get list of files already set to on
