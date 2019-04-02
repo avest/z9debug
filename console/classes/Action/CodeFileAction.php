@@ -134,13 +134,13 @@ class CodeFileAction
 		preg_match('/(.*?)(debug)(.*?)(::)(.*?)(variable)(.*\(?)(.*)(.*\)?)(.*?)(;)(.*?)/', $file_line, $matches);
 		debug::variable($matches);
 
-		$variable_name = $matches[7];
+		$variable_name = isset($matches[7]) ? $matches[7] : '';
 		$variable_name = Str::remove_leading($variable_name, '(');
 		$variable_name = Str::remove_trailing($variable_name, ')');
 		$comma_pos = strpos($variable_name, ',');
 		if ($comma_pos > 0)
 		{
-			$variable_name = left($variable_name, $comma_pos);
+			$variable_name = Str::left($variable_name, $comma_pos);
 		}
 
 
