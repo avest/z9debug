@@ -108,6 +108,54 @@ is limited. To minimize peak memory, debug data is periodically saved to a file 
 * For display performance... the console "pages" the results and large arrays are displayed with a 
 "more" link.
 
+## Recommendations
+
+You can fairly quickly install Z9 Debug into any code base. It only requires a single include
+statement to enable it.
+
+After that, you can quickly add a few debug statements to your code and get instant results.
+
+And then what you can do is over time, add debug statements with any new code that you write or
+any existing code that you need to analyze. 
+
+For my team, we have had the best results as far as maximizing productivity, 
+minimizing defects, and being able to debug production sites (without any code changes) 
+by adding a debug::variable() statement after pretty much every assignment statement that
+gets executed in the code. 
+
+The real payoff of Z9 Debug is fully incorporating into your code. 
+(We leave the debug statements in the code. Z9 Debug has been designed to keep the added code 
+as clean and tidy as possible.)
+
+All of that said, Z9 Debug is a key part of how we code our projects. It is not meant to replace 
+testing. It is one more tool that makes coding easier. Assuming you aren't 
+starting over from scratch every day, all software ultimately becomes "opinionated software".
+The decisions that we make every day as to how we are going to collectively write our software 
+as a team results in "opinonated software".  
+Leaving debug statements in your code is an "opinionated" decision. 
+You have to decide for yourself and your team if the cost of adding a debug statement
+to your code is worth the benefits. 
+
+Our experience is that given the choice between code without debug logic and 
+code with, the code with is the much better investment and will be much easier to maintain over time. 
+Having the ability to instantly see and 
+visually confirm 
+the result of every assignment statement, the format of the data in every variable, and the path 
+taken by every conditional statement is a huge productivity gain. It saves a ton of time when you
+are looking at someone elses code fresh for the first time.
+It elimiminates all of the mental processing that would otherwise be required to hold a picture in 
+your head of what the code is doing and what the data looks like. It is easier to visually 
+confirm results. It is easier to write a few lines of code and quickly confirm your code as you write it. 
+
+My recommendation is that you spend a few minutes to install the software. Try 
+adding a few debug statements to your code.
+Spend some time adding debugging statements to every assignment statement of a given method or function
+to get a feel for how it can work.
+Commit to using it rigorously for a few weeks to give it a chance.
+Just know that the real payoff comes over time when you go back to existing code and all of the 
+debug statements are already there. And you have the ability to debug production code without 
+makeing code changes. That is powerful. 
+
 
 ## Requirements
 
