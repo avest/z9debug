@@ -11,14 +11,14 @@ Z9 Debug
 [License](https://github.com/avest/z9debug#license) |
 [Credits](https://github.com/avest/z9debug#credits)
 
-Z9 Debug is a stand alone PHP debugging class with it's own separate browser console page for viewing results.
+Z9 Debug is a stand alone PHP debugging class that also includes it's own separate browser console for viewing results.
 
-Debugging can be turned on for one or more PHP files, functions, or class methods.
+Debugging can be turned on or off for one or more PHP files, functions, or class methods.
 
-Turn debugging on (in the code or by using the console interface). Execute your web page. Click on 
-the optional console page link in the top right of your rendered web page. See the debug results.
+It works like this... 1) Turn debugging on (in the code or by using the console interface). 2) Execute your web page. 3) Click on 
+the optional console page link in the top right of your rendered web page. 4) See the debug results.
 
-Sample code debugging the first_char() function found in /test.php:  
+Here is some sample code... We are goign to debug the code of the first_char() function found in /test.php:  
 ```php
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'].'/debug/load.php');
@@ -47,28 +47,28 @@ Console page shortcut link (https://&lt;domain name&gt;/&lt;debug folder&gt;/con
 Example console page:
 ![Console page example](https://github.com/avest/z9debug/raw/master/doc/console.png)
 
-Z9 Debug is NOT an "interactiv debugger". It captures all the debug data at the time of code execution 
-and allows you to efficiently view the data you wanted to see immediately afterwards.
+Z9 Debug is NOT an "interactiv debugger". Instead, it captures all the debug data at the time of code execution 
+and allows you to view the debug results of the files, methods, and functions that you selected immediately afterwards.
 
-Debug results are organized into sessions and requests using cookies. A logged in developer on a 
-single browser is a single session. By default, each developer sees there own session. Within a 
-session, there can then be multiple requests by that developer. Each request has it own results. 
+Debug results are organized into "sessions" and "requests". Cookies are used to persist the "session" across requests.
+One developer using one site on one browser makes one unique session. By default, each developer sees there own session data. Within a 
+session, there can then be multiple requests. Each request has it own results. 
 Old sessions are automatically purged. 
 
 * Completely stand alone. Can be installed into any site. No database required.
 
 * Can capture variables, user defined strings, stack trace, memory usage, and perform timing analysis.
 
-* Allows for quick visual confirmation of variable data format.
+* Allows for quick visual confirmation of variable data.
 
-* Quickly confirm code/logic execution during development. 
+* Quickly confirm code and business logic execution during development. 
 
-* For testing, provides a safer alternative to the exit() command that adds reporting of what file 
-and line of code the exit occurred.
+* For testing, provides a safer alternative to the exit() command by reporting what file 
+and line of code executed the exit. See debug::str_exit().
 
-* Can be used to test/debug production sites without making any code changes.
+* The console allows for turning debug on or off on production sites without making any code changes.
 
-* Allows for debugging additional AJAX and API calls that make up a web page.
+* Easily debug AJAX and API calls as well.
 
 * Does not alter rendered HTML or Javascript of a web page.
 
@@ -430,7 +430,7 @@ years, all calls where made like this to pass the variable name:
 # use to have to pass the variable name...
 debug::variable($my_var, 'my_var'); 
 ```
-Retying the name of a variable always bothered me. The solution was to save a copy of the PHP code 
+Retyping the name of a variable always bothered me. The solution was to save a copy of the PHP code 
 file that has the debug statement and to then parse that line of code at the time of rendering the 
 console page. The debug::variable() statement is much cleaner now.
 
