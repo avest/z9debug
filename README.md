@@ -23,7 +23,7 @@ support the software as needed.)
 
 You can think of Z9 Debug as a replacement for print_r() except with a whole bunch of additional features 
 added. 
-Most importanly, by having a separate console for viewing results, 
+Most importantly, by having a separate console for viewing results, 
 your rendered html pages are untouched. 
 
 It works like this... 1) Turn debugging on (in the code or by using the console interface). 2) Execute your web page. 3) Click on 
