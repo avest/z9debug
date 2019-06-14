@@ -18,7 +18,7 @@ Debugging can be turned on or off for one or more PHP files, functions, or class
 It works like this... 1) Turn debugging on (in the code or by using the console interface). 2) Execute your web page. 3) Click on 
 the optional console page link in the top right of your rendered web page. 4) See the debug results.
 
-Here is some sample code... We are goign to debug the code of the first_char() function found in /test.php:  
+Here is some sample code... We are going to debug the code of the first_char() function found in /test.php:  
 ```php
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'].'/debug/load.php');
@@ -406,35 +406,35 @@ debug::print_var($var, 'var_name');
 Z9 Debug was developed over 14 years, starting in 2005, and then open sourced in 2018.
 
 The debug class started out as a better way to display print_r() results and has slowly 
-evolved as needed within real world team use one small tweak at a time.
+evolved as needed within scope of building real world projects one small enhancement at a time.
 
 The original inspiration was to separate the display of debug results from the actual
 rendered HTML of a web site.
  
-The solution was to capture debug results during execution and create a separate console window
+The obvious but maybe not easy solution was to capture debug results during code execution and create a separate console window
 for the display of the results.
 
-The original concept, which is still true, was to design a "stand alone" debug tool that 
-could easily be added to any web site project with one line of code.
+One of the business rules that we have stuck to is that the debug tool is completely "stand alone" and that 
+it can be added to any web site project with one line of code.
 
 To organize the data, the concept of sessions and requests was introduced and tracked with cookies. Login 
 authentication was added to secure the console.
 
-Performance has always been a primary issue during development. Specifically, memory usage, keep the page 
-request fast, and not allowing the console page to hang the browser with too much content.  The current 
-target for additional memory usage is 16MB.
+Performance has always been a primary issue during development. Specifically, memory usage, keeping the page 
+requests fast, and not allowing the console page to blow up or hang the browser with too much content.  
+Worse case, the code is designed to use a maximum of approximately 16MB of additional memory wheh debug is enabled.
 
 PHP does not support passing a variable and then knowing what the name of the variable is... so for many 
-years, all calls where made like this to pass the variable name: 
+years, all calls where made like this: 
 ```
 # use to have to pass the variable name...
 debug::variable($my_var, 'my_var'); 
 ```
-Retyping the name of a variable always bothered me. The solution was to save a copy of the PHP code 
+Retyping the name of a variable was always so clunky. The solution was to save a copy of the PHP code 
 file that has the debug statement and to then parse that line of code at the time of rendering the 
 console page. The debug::variable() statement is much cleaner now.
 
-Another hurdle was how to debug a site without having to push code updates to turn debug on.
+Another hurdle was how to debug a site without having to make code changes.
 The solution was addressed by the "on/off" interface created within the console. Credit: this
 feature was made possible by using the PHP-Parse library. (more info below) 
 
