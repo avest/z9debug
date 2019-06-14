@@ -131,8 +131,7 @@ All of that said, Z9 Debug is a key part of how we code our projects. It is not 
 testing. It is one more tool that makes coding easier. Assuming you aren't 
 starting over from scratch every day, all software ultimately becomes "opinionated software".
 The decisions that we make every day as to how we are going to collectively write our software 
-as a team results in "opinonated software".  
-Leaving debug statements in your code is an "opinionated" decision. 
+as a team results in "opinonated software". Leaving debug statements in your code is an "opinionated" decision. 
 You have to decide for yourself and your team if the cost of adding a debug statement
 to your code is worth the benefits. 
 
