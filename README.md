@@ -151,7 +151,7 @@ adding a few debug statements to your code.
 Spend some time adding debugging statements to every assignment statement of a given method or function
 to get a feel for how it can work.
 Commit to using it rigorously for a few weeks to give it a chance.
-The real payoff comes over time when you find that you are able debug and analyze code without adding 
+The real payoff comes over time when you find that you are able to debug and analyze code without adding 
 any new code. That is powerful. 
 
 
