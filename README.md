@@ -11,15 +11,15 @@ Z9 Debug
 [License](https://github.com/avest/z9debug#license) |
 [Credits](https://github.com/avest/z9debug#credits)
 
+Z9 Debug is a stand alone PHP debugging class that also includes it's own separate browser console 
+for viewing results.
+
 (Please note that this software was written and battle tested over the course of 15+ years. 
 I only recently made the software public. The software is stable. 
 All of the performance kinks have been worked out.
 My team uses the software
 on a daily basis within our own projects. It does what we need it to do. I actively 
 support the software as needed.)
-
-Z9 Debug is a stand alone PHP debugging class that also includes it's own separate browser console 
-for viewing results.
 
 You can think of it as a replacement for print_r(). By having a separate console for viewing results, 
 your rendered htmls is untouched. 
