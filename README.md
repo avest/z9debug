@@ -69,6 +69,8 @@ One developer using one site on one browser makes one unique session. By default
 session, there can then be multiple requests. Each request has it own results. 
 Old sessions are automatically purged. 
 
+## Features
+
 * Completely stand alone. Can be installed into any site. No database required.
 
 * Can capture variables, user defined strings, stack trace, memory usage, and perform timing analysis.
