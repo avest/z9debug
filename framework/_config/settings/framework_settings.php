@@ -16,9 +16,4 @@ Config::merge('framework', array(
 
 ));
 
-// allow api calls without staging site authentication prompt
-Config::merge_array('framework.bypass_staging_auth_urls',
-	array(
-));
-
 ?>

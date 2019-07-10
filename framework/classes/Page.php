@@ -132,10 +132,6 @@ class Page
 
 		debug::variable($this->data, 'this->data');
 
-		if (!Config::get('cms.is_installed'))
-		{
-			debug::set_cms_page($this->data);
-		}
 
 	}
 

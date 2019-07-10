@@ -25,64 +25,6 @@ class Php
 	{
 	}
 
-	// as of PHP 5.4.0, get_magic_quotes_gpc will alway be false
-	public static function turn_magic_quotes_gpc_off()
-	{
-		global $_GLOBAL;
-
-		$turn_magic_quotes_gpc_off = false;
-		if (isset($_GLOBAL['magic_quotes_gpc_off']))
-		{
-			if ($_GLOBAL['magic_quotes_gpc_off'] == false)
-			{
-				if (get_magic_quotes_gpc())
-				{
-					$turn_magic_quotes_gpc_off = true;
-				}
-			}
-		}
-		else
-		{
-			if (get_magic_quotes_gpc())
-			{
-				$turn_magic_quotes_gpc_off = true;
-			}
-		}
-
-		if ($turn_magic_quotes_gpc_off)
-		{
-			self::traverse($_GET);
-			self::traverse($_POST);
-			self::traverse($_COOKIE);
-			self::traverse($_REQUEST);
-			self::traverse($HTTP_GET_VARS);
-			self::traverse($HTTP_POST_VARS);
-			self::traverse($HTTP_COOKIE_VARS);
-			$_GLOBAL['magic_quotes_gpc_off'] = true;
-		}
-	}
-
-	// this function supports turn_magic_quotes_gpc_off()
-	private static function traverse(&$arr)
-	{
-		if (!is_array($arr))
-		{
-			return;
-		}
-
-		foreach ($arr as $key => $val)
-		{
-			if (is_array($arr[$key]))
-			{
-				self::traverse($arr[$key]);
-			}
-			else
-			{
-				$arr[$key] = stripslashes($arr[$key]);
-			}
-		}
-	}
-
 	public static function version()
 	{
 		debug::on(false);

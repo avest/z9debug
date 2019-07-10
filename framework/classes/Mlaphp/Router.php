@@ -88,25 +88,6 @@ class Router
 			$this->hooks = $hooks;
 		}
 
-		if (Config::get('cms.is_installed'))
-		{
-			//$this->not_found_route = 'Z9\Cms\Controller\HomePage';
-			//$this->home_route = 'Z9\Cms\Controller\NotFound';
-			$this->not_found_route = 'Z9\Cms\Controller\NotFound';
-			$this->home_route = 'Z9\Cms\Controller\HomePage';
-
-			if (Config::get('cms.known_page.cmsPageMgr') == '')
-			{
-				CmsPage::update_known_pages();
-
-				debug::enabled(true);
-				debug::on();
-				debug::string('ERROR: known_pages.php appears to be blank or missing.');
-				exit();
-			}
-
-		}
-
 	}
 
 	/**
@@ -338,71 +319,24 @@ class Router
 		if ($is_file_route)
 		{
 			$page_id = '';
-			if (Config::get('cms.is_installed'))
-			{
-				// check if this is a cms internal url
-				$page_id = Gateway::_('Z9\Cms\PagesRead')->cms_get_page_id_by_url($route);
-				debug::variable($page_id);
 
-				if (empty($page_id) || $page_id == -1)
+			$fixed_file_route = $this->fixFileRoute($route);
+			debug::variable($fixed_file_route);
+
+			if ($fixed_file_route <> $this->org_path)
+			{
+				if ($fixed_file_route <> $this->not_found_route)
 				{
-					// check if this is a cms perma link
-					$page_id = Gateway::_('Z9\Cms\PagesRead')->cms_get_page_id_from_perma_link($route);
-					debug::variable($page_id);
+					debug::string('Redirecting to '.$fixed_file_route);
+					debug::str_exit();
+					Http::no_cache();
+					Http::location($route);
+					exit();
 				}
-
-				if (empty($page_id) || $page_id == -1)
+				else
 				{
-					// check if this is a cms page via .id.XXX.html
-					$cms_id_pos = strpos($route, ".id.");
-					debug::variable($cms_id_pos);
-					if ($cms_id_pos > 0)
-					{
-						unset($matches);
-						// ? means not greedy
-						preg_match("/(.*)(\.id\.)(.*?)(\.)(.*)/i", $route, $matches);
-						$page_id = $matches[3];
-						debug::variable($page_id);
-					}
-					if (!is_numeric($page_id))
-					{
-						$page_id = '';
-						debug::variable($page_id);
-					}
-				}
-			}
-
-			if (!empty($page_id) && is_numeric($page_id) && $page_id > 0)
-			{
-				debug::string('cms page found');
-				debug::string('Redirecting to '.$route);
-				debug::str_exit();
-				Http::no_cache();
-				Http::location($route);
-				exit();
-			}
-			else
-			{
-				debug::string('not a cms page');
-
-				$fixed_file_route = $this->fixFileRoute($route);
-				debug::variable($fixed_file_route);
-
-				if ($fixed_file_route <> $this->org_path)
-				{
-					if ($fixed_file_route <> $this->not_found_route)
-					{
-						debug::string('Redirecting to '.$fixed_file_route);
-						debug::str_exit();
-						Http::no_cache();
-						Http::location($route);
-						exit();
-					}
-					else
-					{
-						$route = $fixed_file_route;
-						debug::variable($route);
-					}
+					$route = $fixed_file_route;
+					debug::variable($route);
 				}
 			}
 		}

@@ -370,19 +370,6 @@ class Response
 				debug::variable($view_path);
 				debug::stack_trace();
 			}
-			if (Config::get('cms.is_installed'))
-			{
-				//debug::string('cms is installed');
-				if (!empty($this->page->data['page_id']))
-				{
-					//debug::string('is cms page');
-					if ($this->user->data['be_is_logged_in'])
-					{
-						//debug::string('be_is_logged_in');
-						echo '<a href="/cms/admin/edit_page.php?pageid='.$this->page->data['page_id'].'&cut=&cpy=&page_nbr=1">Edit Page</a><br><br>';
-					}
-				}
-			}
 			exit();
 		}
 		$result = ob_get_clean();
@@ -737,108 +724,6 @@ class Response
 		exit();
 	}
 
-
-	//--------------------------------------------------------
-	// check authentication on staging and development sites
-	//--------------------------------------------------------
-	// exclude search crawler
-	// exclude job scheduler
-	// exclude tracking session job
-	public function enforce_staging_authentication()
-	{
-		debug::on(false);
-		//debug::suppress_output(true);
-		debug::string('enforce_staging_authentication()');
-
-		debug::variable(Config::get('site.is_dev'), 'site.is_dev');
-		debug::variable(Config::get('site.is_stag'), 'site.is_stag');
-		debug::variable(Config::get('site.password_protect_prod'), 'site.password_protect_prod');
-
-		$ok_to_proceed = false;
-		if (Config::get('site.is_stag') || Config::get('site.is_dev') || Config::get('site.password_protect_prod'))
-		{
-			debug::string('is dev, stage, or protect prod');
-			if (Config::get('framework.password_protect_staging'))
-			{
-				debug::string('password protection is on');
-
-				$bypass_url = false;
-				if (is_array(Config::get('framework.bypass_staging_auth_urls')) &&
-					in_array($this->page->data['full_url'], Config::get('framework.bypass_staging_auth_urls')))
-				{
-					$bypass_url = true;
-				}
-				if (is_array(Config::get('framework.bypass_staging_auth_urls')) &&
-					in_array($this->page->data['url_path'], Config::get('framework.bypass_staging_auth_urls')))
-				{
-					$bypass_url = true;
-				}
-				debug::variable($bypass_url);
-
-
-				if (!$bypass_url)
-				{
-					debug::string('not bypassing url');
-					if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] <> 'onsite_search')
-					{
-						$ok_to_proceed = true;
-					}
-				}
-				else
-				{
-					debug::string('bypassing url');
-				}
-			}
-		}
-		debug::variable($ok_to_proceed, 'ok_to_proceed');
-
-		if ($ok_to_proceed)
-		{
-			$cms_cookie_name = 'site_auth';
-			$cms_cookie_value = '';
-			$cms_user = '';
-			$cms_cookie_issued = '';
-			$cms_cookie_expired = '';
-			$cms_cookie_hash = '';
-			$cms_calc_hash = '';
-			$cms_public_part = '';
-			if (isset($_COOKIE[$cms_cookie_name]))
-			{
-				$cms_cookie_value = $_COOKIE[$cms_cookie_name];
-				if (!empty($cms_cookie_value))
-				{
-					list($cms_user, $cms_cookie_issued, $cms_cookie_expired, $cms_cookie_hash) = explode(":", $cms_cookie_value, 4);
-					$cms_public_part = $cms_user.":".$cms_cookie_issued.":".$cms_cookie_expired;
-					$cms_calc_hash = md5(Config::get('framework.site_protect_secret').":".md5($cms_public_part.":".Config::get('framework.site_protect_secret')));
-				}
-			}
-			debug::variable($cms_cookie_name, 'cms_cookie_name');
-			debug::variable($cms_cookie_value, 'cms_cookie_value');
-			debug::variable($cms_user, 'cms_user');
-			debug::variable($cms_cookie_issued, 'cms_cookie_issued');
-			debug::variable($cms_cookie_expired, 'cms_cookie_expired');
-			debug::variable($cms_cookie_hash, 'cms_cookie_hash');
-			debug::variable($cms_public_part, 'cms_public_part');
-			debug::variable($cms_calc_hash, 'cms_calc_hash');
-
-			$is_valid_login = false;
-			if ($cms_calc_hash == $cms_cookie_hash and strlen($cms_cookie_hash) > 0)
-			{
-				$is_valid_login = true;
-			}
-			debug::variable($is_valid_login);
-
-			if (!$is_valid_login)
-			{
-				$redir = urlencode($this->page->data['full_url']);
-				debug::variable($redir, 'redir');
-
-				header('Location: /secure/site_protect?redir='.$redir);
-				exit;
-			}
-
-		}
-	}
 
 }
 
