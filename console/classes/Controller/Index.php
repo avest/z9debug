@@ -53,6 +53,12 @@ class Index
 		$redir = (isset($_POST['redir'])) ? $_POST['redir'] : '';
 		debug::variable($redir);
 
+		if (empty($redir))
+		{
+			$redir = (isset($_GET['redir'])) ? $_GET['redir'] : '';
+			debug::variable($redir);
+		}
+
 		$is_logout = (isset($_GET['logout']) && $_GET['logout'] == '1') ? true : false;
 		debug::variable($is_logout);
 
