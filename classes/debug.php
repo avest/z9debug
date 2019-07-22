@@ -1274,51 +1274,55 @@ CONTENT;
 	{
 		if (self::$data['enabled'])
 		{
-			$stack = debug_backtrace();
-			$output = '';
-
-			// reverse the order of the stack
-			$stack = array_reverse($stack);
-
-			$stackLen = count($stack);
-
-			for ($i = 0; $i < $stackLen-1; $i++)
+			if (self::is_on(array('internal_call' => true)))
 			{
-				$entry = $stack[$i];
 
-				$func = $entry['function'] . '(';
-				$argsLen = count($entry['args']);
-				for ($j = 0; $j < $argsLen; $j++)
-				{
-					$my_entry = $entry['args'][$j];
-					if (is_string($my_entry))
-					{
-						$func .= $my_entry;
-					}
-					if ($j < $argsLen - 1)
-					{
-						$func .= ', ';
-					}
-				}
-				$func .= ')';
+				$stack = debug_backtrace();
+				$output = '';
 
-				$entry_file = 'NO_FILE';
-				if (array_key_exists('file', $entry))
+				// reverse the order of the stack
+				$stack = array_reverse($stack);
+
+				$stackLen = count($stack);
+
+				for ($i = 0; $i < $stackLen-1; $i++)
 				{
-					$entry_file = $entry['file'];
+					$entry = $stack[$i];
+
+					$func = $entry['function'] . '(';
+					$argsLen = count($entry['args']);
+					for ($j = 0; $j < $argsLen; $j++)
+					{
+						$my_entry = $entry['args'][$j];
+						if (is_string($my_entry))
+						{
+							$func .= $my_entry;
+						}
+						if ($j < $argsLen - 1)
+						{
+							$func .= ', ';
+						}
+					}
+					$func .= ')';
+
+					$entry_file = 'NO_FILE';
+					if (array_key_exists('file', $entry))
+					{
+						$entry_file = $entry['file'];
+					}
+					$entry_line = 'NO_LINE';
+					if (array_key_exists('line', $entry))
+					{
+						$entry_line = $entry['line'];
+					}
+					$output .= '#'.($i+1).' '.$entry_file . ':' . $entry_line . ' => ' . $func . PHP_EOL;
 				}
-				$entry_line = 'NO_LINE';
-				if (array_key_exists('line', $entry))
-				{
-					$entry_line = $entry['line'];
-				}
-				$output .= '#'.($i+1).' '.$entry_file . ':' . $entry_line . ' => ' . $func . PHP_EOL;
+				//print_r($output); exit();
+				$backtrace = debug_backtrace();
+				self::$backtrace = $backtrace;
+				self::set_calling_properties();
+				$result = self::debug_str($output, true, NULL, true, NULL, $backtrace, array());
 			}
-			//print_r($output); exit();
-			$backtrace = debug_backtrace();
-			self::$backtrace = $backtrace;
-			self::set_calling_properties();
-			$result = self::debug_str($output, true, NULL, true, NULL, $backtrace, array());
 		}
 	}
 
