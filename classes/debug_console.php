@@ -2849,6 +2849,68 @@ CONTENT;
 		}
 	}
 
+
+	public static function get_logged_in_username()
+	{
+		$token_cookie_name = 'z9debug_token';
+		$cms_cookie_hash = '';
+		$cms_calc_hash = '';
+		$cms_auth_secret_key = debug::get('secret');
+
+		if (isset($_COOKIE[$token_cookie_name]))
+		{
+			$cms_cookie_value = $_COOKIE[$token_cookie_name];
+			list($cms_user, $cms_cookie_issued, $cms_cookie_expired, $cms_cookie_hash) = explode(":", $cms_cookie_value, 4);
+			$cms_public_part = $cms_user.":".$cms_cookie_issued.":".$cms_cookie_expired;
+			$cms_calc_hash = md5($cms_auth_secret_key.":".md5($cms_public_part.":".$cms_auth_secret_key));
+		}
+
+		$is_valid_auth_token = false;
+		if ($cms_calc_hash == $cms_cookie_hash and strlen($cms_cookie_hash) > 0)
+		{
+			$is_valid_auth_token = true;
+		}
+
+		if ($is_valid_auth_token)
+		{
+			return $cms_user;
+		}
+		else
+		{
+			return '';
+		}
+	}
+
+	public static function is_valid_auth_token()
+	{
+		$token_cookie_name = 'z9debug_token';
+		$cms_cookie_value = '';
+		$cms_user = '';
+		$cms_cookie_issued = '';
+		$cms_cookie_expired = '';
+		$cms_cookie_hash = '';
+		$cms_calc_hash = '';
+		$cms_auth_secret_key = debug::get('secret');
+		$cms_public_part = '';
+
+		if (isset($_COOKIE[$token_cookie_name]))
+		{
+			$cms_cookie_value = $_COOKIE[$token_cookie_name];
+			list($cms_user, $cms_cookie_issued, $cms_cookie_expired, $cms_cookie_hash) = explode(":", $cms_cookie_value, 4);
+			$cms_public_part = $cms_user.":".$cms_cookie_issued.":".$cms_cookie_expired;
+			$cms_calc_hash = md5($cms_auth_secret_key.":".md5($cms_public_part.":".$cms_auth_secret_key));
+		}
+
+		$is_valid_auth_token = false;
+		if ($cms_calc_hash == $cms_cookie_hash and strlen($cms_cookie_hash) > 0)
+		{
+			$is_valid_auth_token = true;
+		}
+
+		return $is_valid_auth_token;
+	}
+
+
 //-------------------------------------------------
 // general supporting methods...
 //-------------------------------------------------

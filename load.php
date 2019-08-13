@@ -15,6 +15,7 @@
 
 define('Z9DEBUG_DIR', dirname( __FILE__ ));
 include_once(Z9DEBUG_DIR . '/classes/debug.php');
+include_once(Z9DEBUG_DIR . '/settings/config_settings.php');
 
 debug::construct();
 
