@@ -52,6 +52,8 @@ function z9debug_shutdown()
 		{
 			debug::display_console_link();
 		}
+
+		debug::auto_purge_sessions();
 	}
 
 }

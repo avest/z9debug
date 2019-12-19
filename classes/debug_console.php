@@ -237,6 +237,12 @@ class debug
 		self::$data['force_suppress_output'] = false;
 		self::$data['force_on'] = array();
 
+		// max number of sessions allowd
+		self::$data['max_sessions_allowed'] = 500;
+
+		// number of sessions to auto purge when max reached
+		self::$data['sessions_to_purge_at_max'] = 50;
+
 		self::load_toggle_settings();
 
 		// start page timer
@@ -320,6 +326,76 @@ class debug
 //-----------------------------------------------
 // shutdown methods
 //-----------------------------------------------
+
+	public static function auto_purge_sessions()
+	{
+		$sessions_dir = Z9DEBUG_DIR.'/sessions/';
+		//echo "sessions_dir=<pre>";print_r($sessions_dir);echo "</pre><br>";
+
+		// get sessions list
+		$sessions = self::get_dir_dir_list($sessions_dir);
+		//echo "sessions=<pre>";print_r($sessions);echo "</pre><br>";
+
+		// count number of sessions
+		$sessions_count = (is_array($sessions)) ? count($sessions) : 0;
+		//echo "session_count=<pre>";print_r($sessions_count);echo "</pre><br>";
+
+		$purge_count = 0;
+
+		if ($sessions_count > self::$data['max_sessions_allowed'])
+		{
+			// build list of session dates
+			$sessions_dates = array();
+
+			if (is_array($sessions))
+			{
+				foreach ($sessions as $session)
+				{
+					//echo "session=<pre>";print_r($session);echo "</pre><br>";
+
+					$session_dir = $sessions_dir.$session;
+					//echo "session_dir=<pre>";print_r($session_dir);echo "</pre><br>";
+
+					$sessions_dates[$session] = filemtime($sessions_dir.$session);
+				}
+			}
+			// sort oldest first
+			asort($sessions_dates);
+			//echo "sessions_dates=<pre>";print_r($sessions_dates);echo "</pre><br>";
+
+
+			// purge oldest sessions
+			// do not delete current session
+			//echo "session_id=<pre>";print_r(self::$data['session_id']);echo "</pre><br>";
+			if (is_array($sessions_dates))
+			{
+				foreach ($sessions_dates as $session => $session_date)
+				{
+					//echo "session=<pre>";print_r($session);echo "</pre><br>";
+
+					if ($purge_count < self::$data['sessions_to_purge_at_max'])
+					{
+						if ($session <> self::$data['session_id'])
+						{
+							$session_dir = $sessions_dir.$session;
+							//echo "session_dir=<pre>";print_r($session_dir);echo "</pre><br>";
+
+							$delete_result = self::delete_dir($session_dir);
+							//echo "delete_result=<pre>";print_r($delete_result);echo "</pre><br>";
+
+							$purge_count++;
+							//echo "purge_count=<pre>";print_r($purge_count);echo "</pre><br>";
+						}
+					}
+				}
+			}
+		}
+
+		clearstatcache(true);
+
+		return $purge_count;
+
+	}
 
 	public static function stop_page_load_timer()
 	{
@@ -1325,6 +1401,7 @@ CONTENT;
 			}
 		}
 	}
+
 
 	public static function str_exit($string='', $params=array())
 	{
@@ -3029,6 +3106,44 @@ CONTENT;
 	// FILE METHODS
 	//-------------------------------------------------
 
+	private static function delete_dir($dir_path)
+	{
+		if (@is_dir($dir_path))
+		{
+			$handle = opendir($dir_path);
+			if ($handle)
+			{
+				while (false !== ($item = readdir($handle)))
+				{
+					if ($item != '.' && $item != '..')
+					{
+						if (@is_dir($dir_path.'/'.$item))
+						{
+							self::delete_dir($dir_path.'/'.$item);
+						}
+						else
+						{
+							// add support for deleting a read only file on windows
+							@chmod($dir_path.'/'.$item, 0777);
+
+							unlink($dir_path.'/'.$item);
+						}
+					}
+				}
+				closedir($handle);
+				if (rmdir($dir_path))
+				{
+					$success = true;
+				}
+			}
+		}
+		else
+		{
+			$success = true;
+		}
+		return $success;
+	}
+
 	private static function read_file($file_path)
 	{
 		$output = "";
@@ -3196,6 +3311,23 @@ CONTENT;
 		{
 			return false;
 		}
+	}
+
+	private static function get_dir_dir_list($dir_path)
+	{
+		$dir_list=array();
+		if ($handle = @opendir($dir_path))
+		{
+			while (false !== ($file = readdir($handle)))
+			{
+				if ($file <> '.' && $file <> '..' && @is_dir($dir_path.'/'.$file) )
+				{
+					$dir_list[] = $file;
+				}
+			}
+			closedir($handle);
+		}
+		return $dir_list;
 	}
 
 	//-------------------------------------------------
